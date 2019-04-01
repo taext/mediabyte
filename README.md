@@ -89,6 +89,8 @@ Windows 10 support. (beta)
 
 [Write](https://github.com/taext/mediabyte/blob/master/user_guide/Demo:%20bit.Mp3%20Mixtape%20Cutting.ipynb)  bit.MP3 **Mixtape** chapters to MP3s or splice chapters to single **Mixtape** MP3. (MP3 remixing) (alpha)
 
+[Load](https://github.com/taext/mediabyte/blob/master/user_guide/Demo:%20Online%20.omm%20support.ipynb) online .omm **Mixtape** files.
+
 <br>
 
 Currently the output options are: 
@@ -112,4 +114,4 @@ Currently the output options are:
 <br>
 
 
-                                            Updated March 31th 2019
+                                        Updated April 2nd 2019
