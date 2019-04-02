@@ -30,7 +30,7 @@ class Convert():
 
 
     def youtube_html_to_omm(youtube_html_filename, omm_filename):
-        """Takes saved YouTube HTML filename, returns .omm mixtape file."""
+        """Takes saved YouTube playlist HTML filename, writes .omm mixtape file."""
         
         with open(youtube_html_filename,'r') as f:
             file_content = f.read()
@@ -53,7 +53,7 @@ class Convert():
         sh.ell('google-chrome','https://github.com/taext/mediabyte/tree/master/user_guide')
 
 
-    def time_str(time_str):
+    def _time_str(time_str):
         """Takes '2h5m3s' format time string, returns value in seconds (internal method)."""
 
         m = re.search('([0-9]+)s', time_str)   # match seconds
@@ -77,28 +77,28 @@ class Convert():
         return(seconds_total)
 
 
-    def code_length():
-        """Show total code line count."""
+    # def code_length():
+    #     """Show total code line count."""
 
-        f = open('mediabyte.py','r')
-        lines = f.readlines()
+    #     f = open('mediabyte.py','r')
+    #     lines = f.readlines()
 
-        lines_of_code = []
-        for line in lines:
+    #     lines_of_code = []
+    #     for line in lines:
 
-            if len(line) > 5:
-                m = re.search('^\s*#', line)    # check for comment line to be excluded
-                m2 = re.search('\"\"\"', line)  # check for docstrings to be excluded
-                if m or m2:
-                    pass
-                else:
-                    lines_of_code.append(line)
+    #         if len(line) > 5:
+    #             m = re.search('^\s*#', line)    # check for comment line to be excluded
+    #             m2 = re.search('\"\"\"', line)  # check for docstrings to be excluded
+    #             if m or m2:
+    #                 pass
+    #             else:
+    #                 lines_of_code.append(line)
 
-        return(len(lines_of_code))
+    #     return(len(lines_of_code))
 
 
     def version():
-        """Show version."""
+        """Show version number."""
         # get version from cnf.py
         version_string = cnf.version_number
 
@@ -118,7 +118,7 @@ class Convert():
         return(result)
 
 
-    def browser_open(*input_url):
+    def _browser_open(*input_url):
         """Open URL in Chrome tab (internal method)."""
 
         sh.ell('google-chrome', *input_url)
@@ -137,7 +137,7 @@ class Convert():
     #             return m.group(1)
 
 
-    def determine_type(item):
+    def _determine_type(item):
         """Takes yno string, returns yota object type."""
 
         res = yno.main(item)
@@ -162,7 +162,7 @@ class Convert():
     def vlc_open(self, full_screen=False):
             """Play Sample in VLC player (internal method)."""
             
-            obj_type = Convert.determine_type(self.omm)
+            obj_type = Convert._determine_type(self.omm)
 
             url = self.url
             if obj_type == 'Sample':
@@ -181,24 +181,24 @@ class Convert():
                 sh.ell('vlc',url)
 
 
-    def url_file_to_mixtape(filename):
+    # def url_file_to_mixtape(filename):
     
-        with open(filename) as f:
-            urls = f.readlines()
+    #     with open(filename) as f:
+    #         urls = f.readlines()
 
-        # remove newlines
-        urls2 = []
-        for item in urls:
-            urls2.append(item.rstrip())
-        # start mixtape with first url    
-        if len(urls2) > 0:
-            mixtape = Convert.omm(urls2[0])
-        # build mixtape with remaining urls    
-        if len(urls2) > 1:
-            for item in urls2[1:]:
-                mixtape += Convert.omm(item)
+    #     # remove newlines
+    #     urls2 = []
+    #     for item in urls:
+    #         urls2.append(item.rstrip())
+    #     # start mixtape with first url    
+    #     if len(urls2) > 0:
+    #         mixtape = Convert.omm(urls2[0])
+    #     # build mixtape with remaining urls    
+    #     if len(urls2) > 1:
+    #         for item in urls2[1:]:
+    #             mixtape += Convert.omm(item)
                 
-        return mixtape
+    #     return mixtape
 
 
     def url_list_to_mixtape(url_list):
@@ -262,7 +262,7 @@ class Convert():
         mix_obj.write_player_html(filename)
 
 
-    def omm(omm_str):
+    def omm(omm_str, remember=True):
         """Takes OMM format string, returns MediaByte object."""
         
         def parse_omm_mixtape(inp):
@@ -312,9 +312,9 @@ class Convert():
             if type_result == 'Sample':
                 # bit object passed
                 if len(parsing_res[4]) > 0:
-                    mySample = yota.Sample(url=parsing_res[2], time_start=Convert.time_str(parsing_res[0][0]), time_end=Convert.time_str(parsing_res[0][1]), title=title, tags=parsing_res[3], bits=parsing_res[4])
+                    mySample = yota.Sample(url=parsing_res[2], time_start=Convert._time_str(parsing_res[0][0]), time_end=Convert._time_str(parsing_res[0][1]), title=title, tags=parsing_res[3], bits=parsing_res[4])
                 else:
-                    mySample = yota.Sample(url=parsing_res[2], time_start=Convert.time_str(parsing_res[0][0]), time_end=Convert.time_str(parsing_res[0][1]), title=title, tags=parsing_res[3])
+                    mySample = yota.Sample(url=parsing_res[2], time_start=Convert._time_str(parsing_res[0][0]), time_end=Convert._time_str(parsing_res[0][1]), title=title, tags=parsing_res[3])
                 return(mySample)
             if type_result == 'Cue':
                 # bit object passed
@@ -477,10 +477,11 @@ class Convert():
             return(result)
         # add to hash_dict if not recognized
         else:
-            # check for b. or y. (to avoid non-mediabyte entries)
-            m = re.search('^[by]\.', omm_str)
-            if m:
-                ono.add_to_hash_dict(omm_str)
+            if remember == True:
+                # check for b. or y. (to avoid non-mediabyte entries)
+                m = re.search('^[by]\.', omm_str)
+                if m:
+                    ono.add_to_hash_dict(omm_str)
 
 
         # check for full YouTube URL, parse to Yota string 

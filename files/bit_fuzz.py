@@ -113,7 +113,7 @@ def bit_gen():
         
         for i in range(NoOfTimeCodes):
             my_time1 = next(bit_time_gen())
-            my_time_1_int = lib.Convert.time_str(my_time1)
+            my_time_1_int = lib.Convert._time_str(my_time1)
             result.append(my_time_1_int)
             result_strings.append(my_time1)
 

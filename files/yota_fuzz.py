@@ -130,7 +130,7 @@ def yota_gen():
         result_strings = []
         for i in range(NoOfTimeCodes):
             my_time1 = next(youtube_time_gen())
-            my_time_1_int = Convert.time_str(my_time1)
+            my_time_1_int = Convert._time_str(my_time1)
             result.append(my_time_1_int)
             result_strings.append(my_time1)
 

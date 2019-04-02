@@ -720,7 +720,7 @@ class Cue():
         self.last_name = self.youtube_hash[7:]
 
         self.yt_time = time_start
-        self.time_start = lib.Convert.time_str(time_start)
+        self.time_start = lib.Convert._time_str(time_start)
         self.tags = tags
 
         self.url = 'https://www.youtube.com/embed/' + self.youtube_hash + '?start=' + str(self.time_start) + '&rel=0' + '&autoplay=1'
