@@ -44,7 +44,7 @@ Meant for sharing fun and knowledge with friends and strangers as well as academ
 
 
 
-Check out the mediabyte [documentation](https://github.com/taext/mediabyte/blob/master/user_guide/Overview.md) for details and examples.
+Check out the mediabyte [documentation](https://github.com/taext/mediabyte/blob/master/user_guide/README.md) for details and examples.
 
 <br>
 

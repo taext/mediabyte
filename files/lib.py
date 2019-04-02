@@ -1,4 +1,4 @@
-import re
+import re, json, requests
 from . import yn, sh, yno, bno
 from . import yota
 from . import omm_file_parser
@@ -8,6 +8,41 @@ from . import ono
 
 
 class Convert():
+
+
+    def sync():
+        """Upload local hash_dict to server."""
+        filename = cnf.hash_dict_path
+        with open(filename, 'r') as f:
+            hash_dict = json.load(f)
+
+        resp = requests.post('http://taext.pythonanywhere.com/post', json=hash_dict)
+        if resp:
+            print(resp.content.decode())
+        else:
+            print(resp)
+
+
+    def filter(omm_str, contains=[], does_not_contain=[]):
+        """Takes omm string, contains and does_not_contain lists, returns Bool"""
+        
+        def test_for_tag(tag, omm_str):
+            """Test for tag in omm string"""
+            m = re.search('[\.^]' + tag + '(\.|$)', omm_str)
+            if m: return(True)
+            else: return(False)
+        
+        # OR filtering       (using contains list)
+        for item in contains:
+            contains_tag_check = test_for_tag(item, omm_str)            
+            if contains_tag_check:
+                # NOT filtering      (using does_not_contain list)
+                for item in does_not_contain:
+                    tag_exclusion_check = test_for_tag(item, omm_str)
+                    if tag_exclusion_check:
+                        return False
+                # return OR filtering result
+                return contains_tag_check                
 
 
     def youtube_takeout_to_omm(youtube_takeout_html_filename, omm_filename):
@@ -287,19 +322,15 @@ class Convert():
 
         def parse_object(in_obj):
             """Takes yno string, returns yota object: Sample, Cue, Yota or Mixtape."""
-
+            
+            # test for bit
             m = re.search('^b\.', in_obj)
             if m:
-                #test_for_mp3 = bno.mp3_or_not(in_obj)
-                #if test_for_mp3:
-                #title = 'MyBit'
                 myBit = bno.main(in_obj)
-                #myBit = Bit(bitly_hash=parsing_res[2], tags=parsing_res[3], title=title)
                 return(myBit)
 
             type_result = determine_type(in_obj)
             parsing_res = yno.main(in_obj)
-            #print('parsing_res:', parsing_res)
 
             if len(parsing_res[1]) > 0:
                 title = parsing_res[1][0]
@@ -310,22 +341,21 @@ class Convert():
 
 
             if type_result == 'Sample':
-                # bit object passed
+                # Sample hash bit object(s)
                 if len(parsing_res[4]) > 0:
                     mySample = yota.Sample(url=parsing_res[2], time_start=Convert._time_str(parsing_res[0][0]), time_end=Convert._time_str(parsing_res[0][1]), title=title, tags=parsing_res[3], bits=parsing_res[4])
                 else:
                     mySample = yota.Sample(url=parsing_res[2], time_start=Convert._time_str(parsing_res[0][0]), time_end=Convert._time_str(parsing_res[0][1]), title=title, tags=parsing_res[3])
                 return(mySample)
             if type_result == 'Cue':
-                # bit object passed
+                # Cue has bit object(s)
                 if len(parsing_res[4]) > 0:
                     myCue = yota.Cue(parsing_res[2], time_start=parsing_res[0][0], title=title, tags=parsing_res[3], bits=parsing_res[4])
                 else:
                     myCue = yota.Cue(parsing_res[2], time_start=parsing_res[0][0], title=title, tags=parsing_res[3])
                 return(myCue)
             if type_result == 'Yota':
-                # bit objects passed
-                
+                # Yota has bit object(s)
                 if len(parsing_res) == 5:
                     myYota = yota.Yota(parsing_res[2], title=title, tags=parsing_res[3], bits=parsing_res[4])
                 else:
@@ -411,9 +441,8 @@ class Convert():
             
         
         def check_for_yota_file(input_str):
+            """Takes omm string, checks for .omm ending"""
 
-            #m = re.search('\.yota$', input_str) # if str ends with .yota
-            #m2 = re.search('\.yno$', input_str) # if str ends with .yno
             m = re.search('\.omm$', input_str)
             if m:
                 omm_object = omm_file_parser.main(input_str, Convert.omm)
@@ -423,7 +452,7 @@ class Convert():
         def split_yotas(yotas_str):
 
             m = re.search('\.y\.', yotas_str)
-            if m: # check not matching youtube hash starting with y
+            if m: # check not matching y.youtubehash (hash starting with y)
                 my_list = yotas_str.split('.y')
                 new_list = [my_list[0]]
                 for item in my_list[1:]:
@@ -456,7 +485,6 @@ class Convert():
             for item in new_list[2:]:
                 myMix += bno.main(item)
             return(myMix)
-            #return(new_list)
 
 
         # check for online .omm
@@ -506,5 +534,5 @@ class Convert():
         if m:
             return(parse_object(omm_str))
         else:
-            raise ValueError('input doesn\'t compute')
+            raise ValueError("input doesn't compute")
 
