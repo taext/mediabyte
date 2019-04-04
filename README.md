@@ -18,7 +18,7 @@ Meant for sharing fun and knowledge with friends and strangers as well as academ
 
 ### .omm Mixtape file
 
-![OMM syntax highlight example](https://v1d.dk/yno/yno_syntax_highlight_demo_11.jpg)
+![OMM syntax highlight example](https://v1d.dk/omm/omm_syntax_highlight.jpg)
 
 <br>
 
