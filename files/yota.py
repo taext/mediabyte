@@ -97,7 +97,7 @@ class Mixtape():
             new_url = item.url[:-1] + '0'
             result.append(new_url)
         
-        lib.Convert.browser_open(*result)
+        lib.Convert._browser_open(*result)
 
 
     def __getitem__(self, given):
@@ -507,7 +507,7 @@ class Sample():
     def play(self):
         """Open sample in tab in browser."""
 
-        lib.Convert.browser_open(self.url)
+        lib.Convert._browser_open(self.url)
 
 
 
@@ -813,7 +813,7 @@ class Cue():
     def play(self):
         """Open sample in tab in browser."""
 
-        lib.Convert.browser_open(self.url)
+        lib.Convert._browser_open(self.url)
 
 
     def vlc(self, full_screen=False):
@@ -1070,7 +1070,7 @@ class Yota():
     def play(self):
         """Open sample in tab in browser."""
 
-        lib.Convert.browser_open(self.url)
+        lib.Convert._browser_open(self.url)
 
 
     def vlc(self, full_screen=False):

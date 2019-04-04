@@ -6,9 +6,48 @@ from . import omm_file_parser
 from . import online_omm_parser
 from . import cnf
 from . import ono
+from . import onoObject
 
 
 class Convert():
+
+
+    def search(search_term, exclusive_terms=[], mixtape=False):
+        """Search omm() parsing history,
+        return list of result strings, 
+        optionally Mixtape."""
+
+        # create a MediabyteHashObj (with current parsing history)
+        o = onoObject.MediabyteHashObj()
+        result = []
+        for item in o: 
+            if search_term in o[item] or search_term in item:
+                exclusive_match = False
+                if exclusive_terms:
+
+                    for exclusive_term in exclusive_terms:
+                        #print(f'o[item]: {o[item]}, ex_term: {exclusive_term}')
+                        m = re.search(exclusive_term, o[item])
+                        if m:
+                            exclusive_match = True
+                # break loop cycle if exclusive match
+                if exclusive_match == True:
+                    #print(f'dropping {o[item]}')
+                    continue
+
+                result.append(o[item])
+                if mixtape:
+                    # append to Mixtape
+                    try:
+                        myMix += Convert.omm(o[item])
+                    # create new Mixtape
+                    except:
+                        myMix = yota.Mixtape(Convert.omm(o[item]))
+
+        if mixtape:
+            return myMix
+        else:
+            return result
 
 
     def sync():

@@ -91,6 +91,9 @@ Windows 10 support. (beta)
 
 [Load](https://github.com/taext/mediabyte/blob/master/user_guide/Demo:%20Online%20.omm%20support.ipynb) online .omm **Mixtape** files.
 
+Search history with `search('podcast')`. (tag, title or hash search)
+
+
 <br>
 
 Currently the output options are: 
@@ -114,4 +117,4 @@ Currently the output options are:
 <br>
 
 
-                                        Updated April 2nd 2019
+                                        Updated April 4th 2019
