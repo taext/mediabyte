@@ -1,4 +1,5 @@
 import re, json, requests
+from more_itertools import unique_everseen
 from . import yn, sh, yno, bno
 from . import yota
 from . import omm_file_parser
@@ -58,10 +59,10 @@ class Convert():
         with open(omm_filename,'w') as f:
             for item in results2:
                 # NB: Hacky, filtering y.y results (because of faulty .y. mixtape splitting)
-                m = re.search('^y', item)
-                if not m:
-                    f.write('y.' + item)
-                    f.write('\n')
+                #m = re.search('^y', item)
+                #if not m:
+                f.write('y.' + item)
+                f.write('\n')
 
 
     def youtube_html_to_omm(youtube_html_filename, omm_filename):
@@ -303,10 +304,10 @@ class Convert():
         def parse_omm_mixtape(inp):
             """Split mixtape string into list (split on .y)."""
 
-            newInp = inp.split('.y')
+            newInp = inp.split('.y.')
             omm_lines = [newInp[0]]
             for item in newInp[1:]:
-                omm_lines.append("y" + item)
+                omm_lines.append("y." + item)
             return(omm_lines)
 
 
@@ -453,10 +454,10 @@ class Convert():
 
             m = re.search('\.y\.', yotas_str)
             if m: # check not matching y.youtubehash (hash starting with y)
-                my_list = yotas_str.split('.y')
+                my_list = yotas_str.split('.y.')
                 new_list = [my_list[0]]
                 for item in my_list[1:]:
-                    new_str = 'y' + item
+                    new_str = 'y.' + item
                     new_list.append(new_str)
                 return(new_list)
             else:
@@ -476,10 +477,10 @@ class Convert():
                 return(True)
         
         def parse_bit_mixtape(input_str):
-            my_list = input_str.split('.b')
+            my_list = input_str.split('.b.')
             new_list = [my_list[0]]
             for item in my_list[1:]:
-                new_str = 'b' + item
+                new_str = 'b.' + item
                 new_list.append(new_str)
             myMix = bno.main(new_list[0]) + bno.main(new_list[1])
             for item in new_list[2:]:

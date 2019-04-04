@@ -107,48 +107,26 @@ def get_bit_object(input_str):
 
     m = re.search('\.b\.', input_str)
     if m:
-        bit_object_results = input_str.split('b.')
+        bit_object_results = input_str.split('.b.')
     else:
         bit_object_results = [input_str]
     new_objects = []
     for item in bit_object_results:
-        new_objects.append(item[:-1])
-    #print('new_objects:', new_objects)
-    # clean trailing dots after cut about
-    
-    #for item in bit_object_results[1:]:
-    #    bit_obj_parsed.append(item[:-1])
+        new_objects.append(item)
 
     if len(new_objects) > 1:
         leading_str = new_objects[0]
     else:
         return([], input_str)
-    # if leading_str[-1] == '.':
-    #     leading_str = leading_str[:-1]
-    #   ##print('cut!')
-    #print('leading_str:', leading_str)
+
     result = ""
     result_list = []
     
     for item in bit_object_results[1:]:
-        #if item[-1] == '.':
-        #    item = item[:-1]
-       ##print('item:', item)
-        # if item[-1] == '.':
-        #     item = item[:-1]
-        result = 'b.' + item
-       ##print('result:', result)
 
-        #if result[-1] == '.':
-        #    result_list.append(result[:-1])
-        #else:
+        result = 'b.' + item
         result_list.append(result)
-    #if leading_str[-1] == '.':
-        #print('leading_str:', leading_str)
-        #print('match')
-    #    leading_str = leading_str[:-1] # from split above
-        #print('new leading_str:', leading_str)
-   ##print('result_list:', result_list)
+
     return(result_list, leading_str)
 
 
