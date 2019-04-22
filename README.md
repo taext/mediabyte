@@ -23,7 +23,7 @@ Meant for sharing fun and knowledge with friends and strangers as well as academ
 <br>
 
 
-### The **OMM** tag syntax
+### The mediabyte tag syntax
 
 1. tags are separated by dots
 2. title-case tags are titles
@@ -65,9 +65,9 @@ Check out the mediabyte [documentation](https://github.com/taext/mediabyte/blob/
 
 The mediabyte back-end is feature-complete.
 
-The OMM syntax is feature-complete.
+The mediabyte syntax is feature-complete.
 
-General interface `omm()` to parse any mediabyte string or file.
+General interface `omm()` to parse any mediabyte string, Mixtape file or Mixtape link.
 
 Syntax highlighting and `.omm` file association using the contained Atom [package](https://github.com/taext/mediabyte/tree/master/atomSyntaxHighlighting). (beta)
 
@@ -91,7 +91,7 @@ Windows 10 support. (beta)
 
 [Load](https://github.com/taext/mediabyte/blob/master/user_guide/Demo:%20Online%20.omm%20support.ipynb) online .omm **Mixtape** files.
 
-Search history with `search('podcast')`. (tag, title or hash search)
+Search history with `search('podcast')`. (tag, title or mediabyte hash search)
 
 Convert saved YouTube .htm file to **Mixtape**.
 
