@@ -69,7 +69,7 @@ The OMM syntax is feature-complete.
 
 General interface `omm()` to parse any mediabyte string or file.
 
-Syntax highlighting and `.omm` file association using the contained Atom [package](https://github.com/taext/mediabyte/tree/master/atom-syntax-highlighting). (beta)
+Syntax highlighting and `.omm` file association using the contained Atom [package](https://github.com/taext/mediabyte/tree/master/atomSyntaxHighlighting). (beta)
 
 Search YouTube directly and get results in **Mixtape** with `youtube('copenhagen 10')`.
 
@@ -92,6 +92,10 @@ Windows 10 support. (beta)
 [Load](https://github.com/taext/mediabyte/blob/master/user_guide/Demo:%20Online%20.omm%20support.ipynb) online .omm **Mixtape** files.
 
 Search history with `search('podcast')`. (tag, title or hash search)
+
+Convert saved YouTube .htm file to **Mixtape**.
+
+Convert YouTube Takeout watch history file to **Mixtape**.
 
 
 <br>
@@ -117,4 +121,4 @@ Currently the output options are:
 <br>
 
 
-                                        Updated April 4th 2019
+                                        Updated April 22th 2019
