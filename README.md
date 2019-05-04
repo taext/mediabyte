@@ -52,7 +52,7 @@ The Online Media Metadata (OMM) mediabyte format is
 ### The mediabyte tag syntax
 
 1. tags are separated by dots
-2. title-case tags are titles
+2. capitalized tags are titles
 3. YouTube time code tags are such
 4. remaining tags are ordinary tags
 5. **y.youtubehash** or **b.bitlyhash** is mandatory
