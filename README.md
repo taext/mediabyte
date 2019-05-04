@@ -1,20 +1,46 @@
 
 
-```python
-from mediabyte import omm                     # https://github.com/taext/mediabyte
-```
+
+# Mediabyte 
+### v0.8.6.6
+
+<br>
+
+<p>The Online Media Metadata (OMM) mediabyte format is an open-source poly-platform playlist format and succinct online media referencing syntax.</p>
+
+<br>
+
+### Scope
+The Online Media Metadata (OMM) mediabyte format is
+- an open-source online media playlist format
+- an online media referencing format 
+  - a succinct alternative to the URL format
+  - with optional explicit metadata (title and/or tags)
+- a simple Mixtape HTML player
+- a Python API for hacking with the format
+- friendly with Jupyter Notebook
+
+<br>
+
+### Value Proposition
+
+- tag the content of specific YouTube videos
+  - e.g. to help discoverability of favourite content
+- remix YouTube videos with 1-second precision 
+  - e.g. to create a topical mix of clips from a video series
+- play a YouTube search directly
+- reference, tag and access any online content
+  - native Bitly hash support (incl. custom hashes)
+- index and remix podcast episodes
+  - native MP3 support
+
 <br>
 
 
-### What is **OMM**?
 
-**OMM** - Online Media Metadata - is a simple and succinct syntax for describing, viewing and sharing specific online media content in mediabytes.
-
-Playing a YouTube or MP3 clip is the same as sampling is the same as sharing when using mediabytes.
-
-Meant for sharing fun and knowledge with friends and strangers as well as academic referencing.
 
 <br>
+
 
 ### .omm Mixtape file
 
@@ -79,6 +105,8 @@ Search auto-generated subtitles with `Yota.srt_search` and `Mixtape.srt_search`.
 
 Bitly links. (general link support)
 
+Custom Bitly link support, e.g. `b.sn-704.Security Now`. (a title tag is needed, to be fixed)
+
 MP3 support.
 
 Pip installation `pip install mediabyte`.
@@ -96,6 +124,10 @@ Search history with `search('podcast')`. (tag, title or mediabyte hash search)
 Convert saved YouTube .htm file to **Mixtape**.
 
 Convert YouTube Takeout watch history file to **Mixtape**.
+
+Online mediabyte/Mixtape URL [player](http://www.mediabyte.xyz/).
+
+Online YouTube search to [player](http://www.mediabyte.xyz/search).
 
 
 <br>
@@ -121,4 +153,4 @@ Currently the output options are:
 <br>
 
 
-                                        Updated April 22th 2019
+                                        Updated May 2nd 2019
