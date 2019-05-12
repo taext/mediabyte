@@ -11,7 +11,7 @@ The **mediabyte** format is an open-source poly-platform playlist format and suc
 <br>
 
 ### Scope
-The Online Media Metadata (OMM) mediabyte format is
+The mediabyte format is
 - an open-source online media playlist format
 - an online media referencing format 
   - a succinct alternative to the URL format
