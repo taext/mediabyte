@@ -15,7 +15,7 @@ The Online Media Metadata (OMM) mediabyte format is
 - an open-source online media playlist format
 - an online media referencing format 
   - a succinct alternative to the URL format
-  - with optional explicit metadata (title and/or tags)
+  - with optional explicit metadata (title, tags, time codes)
 - a simple Mixtape HTML player
 - a Python API for hacking with the format
 - friendly with Jupyter Notebook
