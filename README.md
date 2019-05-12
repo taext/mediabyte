@@ -6,7 +6,7 @@
 
 <br>
 
-<p>The Online Media Metadata (OMM) mediabyte format is an open-source poly-platform playlist format and succinct online media referencing syntax.</p>
+<p>The **mediabyte** format is an open-source poly-platform playlist format and succinct online media referencing syntax.</p>
 
 <br>
 
