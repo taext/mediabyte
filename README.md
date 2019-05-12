@@ -121,13 +121,13 @@ Windows 10 support. (beta)
 
 Search history with `search('podcast')`. (tag, title or mediabyte hash search)
 
-Convert saved YouTube .htm file to **Mixtape**.
+Convert manually saved YouTube .htm file to **Mixtape**.
 
 Convert YouTube Takeout watch history file to **Mixtape**.
 
-Online mediabyte/Mixtape URL [player](http://www.mediabyte.xyz/).
+Online mediabyte and Mixtape URL [player](http://www.mediabyte.xyz/). (online player)
 
-Online YouTube search to [player](http://www.mediabyte.xyz/search).
+Online YouTube search to [player](http://www.mediabyte.xyz/search). (online YouTube search player)
 
 
 <br>
