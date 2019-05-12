@@ -6,7 +6,7 @@
 
 <br>
 
-<p>The **mediabyte** format is an open-source poly-platform playlist format and succinct online media referencing syntax.</p>
+The **mediabyte** format is an open-source poly-platform playlist format and succinct online media referencing syntax.
 
 <br>
 
