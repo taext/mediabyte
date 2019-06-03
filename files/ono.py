@@ -57,7 +57,8 @@ def add_to_hash_dict(mediabyte_str):
                 calculated_hash = temp_hash[i:i+11]
                 return(calculated_hash)
 
-    calculated_hash = hash(mediabyte_str)
+    no_whitespace_mediabyte_str = mediabyte_str.replace(' ', '_')
+    calculated_hash = hash(no_whitespace_mediabyte_str)
 
     # m = hashlib.sha256()
     # m.update(mediabyte_str.encode())
@@ -67,7 +68,7 @@ def add_to_hash_dict(mediabyte_str):
     mixtape_check = re.search('\.y\.', mediabyte_str)
     
     #if not mixtape_check:
-    hash_dict[calculated_hash] = mediabyte_str
+    hash_dict[calculated_hash] = mediabyte_str.replace(' ','_')
     #else:
     #    hash_dict[calculated_hash] = myObj.omm_oneline()
     

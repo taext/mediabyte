@@ -2,11 +2,10 @@
 
 
 # Mediabyte 
-### v0.8.6.8
 
 <br>
 
-The **mediabyte** format is an open-source poly-platform playlist format and succinct online media referencing syntax.
+Mediabyte is an open-source poly-platform playlist format and succinct online media referencing syntax.
 
 <br>
 
@@ -15,7 +14,7 @@ The mediabyte format is
 - an open-source online media playlist format
 - an online media referencing format 
   - a succinct alternative to the URL format
-  - with optional explicit metadata (title, tags, time codes)
+  - with optional explicit metadata (title, tags, time-codes)
 - a simple Mixtape HTML player
 - a Python API for hacking with the format
 - friendly with Jupyter Notebook
@@ -46,13 +45,15 @@ The mediabyte format is
 
 ![OMM syntax highlight example](https://v1d.dk/omm/omm_syntax_highlight.jpg)
 
+[link to](https://v1d.dk/omm/mixtape24.omm) the Mixtape file above (Mixtape links can be parsed by the system, copy the link and [try it](http://www.mediabyte.xyz/) yourself)
+
 <br>
 
 
 ### The mediabyte tag syntax
 
 1. tags are separated by dots
-2. capitalized tags are titles
+2. title-case tags are titles
 3. YouTube time code tags are such
 4. remaining tags are ordinary tags
 5. **y.youtubehash** or **b.bitlyhash** is mandatory
@@ -125,9 +126,9 @@ Convert manually saved YouTube .htm file to **Mixtape**.
 
 Convert YouTube Takeout watch history file to **Mixtape**.
 
-Online mediabyte and Mixtape URL [player](http://www.mediabyte.xyz/). (online player)
+Online mediabyte and Mixtape link [player](http://www.mediabyte.xyz/).
 
-Online YouTube search to [player](http://www.mediabyte.xyz/search). (online YouTube search player)
+Online YouTube search to [player](http://www.mediabyte.xyz/search).
 
 
 <br>

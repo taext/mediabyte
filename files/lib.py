@@ -11,6 +11,15 @@ from . import onoObject
 
 class Convert():
 
+    def readme():
+        """Returns README.md Markdown file content."""
+
+        file_path = cnf.package_path + cnf.os_sep + 'README.md'
+        with open(file_path, 'r') as f:
+            file_content = f.read()
+            
+            return file_content
+
 
     def search(search_term, exclusive_terms=[], mixtape=False):
         """Search omm() parsing history,
@@ -302,7 +311,7 @@ class Convert():
         myMix = Convert.url_list_to_mixtape(urls)
 
         for i, item in enumerate(myMix):
-            item.title = search_string.capitalize() + ' #' + str(i+1)
+            item.title = search_string.capitalize() + ' - ' + str(i+1)
             item.update()
 
         if clip_length:

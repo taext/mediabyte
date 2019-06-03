@@ -38,7 +38,7 @@ def srt_search(self, omm, Mixtape, keyword, clip_length=10, do_not_combine_overl
         myYota = omm(result[0])
         if clip_length:
             myYota = myYota.to_sample(omm, add=clip_length)
-        myYota.title = self.title + ' keyword ' + keyword + ' #1'
+        myYota.title = self.title + ' keyword ' + keyword + ' 1'
         myYota.update()
         myMixtape = Mixtape(myYota)
         # print('startet Mixtape with object:', result[0])
@@ -46,7 +46,7 @@ def srt_search(self, omm, Mixtape, keyword, clip_length=10, do_not_combine_overl
             myYota = omm(item)
             if clip_length:
                 myYota = myYota.to_sample(omm, add=clip_length)
-            myYota.title = self.title + ' keyword ' + keyword + ' #' + str(i+2)
+            myYota.title = self.title + ' keyword ' + keyword + ' ' + str(i+2)
             myYota.update()
             myMixtape += myYota
             # print('added item:', item)
@@ -55,7 +55,7 @@ def srt_search(self, omm, Mixtape, keyword, clip_length=10, do_not_combine_overl
         myYota = omm(result[0])
         if clip_length:
             myYota = myYota.to_sample(omm, add=clip_length)
-        myYota.title = self.title + ' keyword ' + keyword + ' #1'
+        myYota.title = self.title + ' keyword ' + keyword + ' 1'
         myYota.update()
         myMixtape = Mixtape(myYota)
 

@@ -249,7 +249,28 @@ class Mixtape():
                 new_str = '<h3>' + repr(item) + '</h3> <br>' + new_str
             iframe_collection_str += new_str + " "
     
-        javascript_by_jonas = '<script src="https://www.youtube.com/iframe_api"></script><script>function onYouTubeIframeAPIReady() { window.yotasamples = {}; let i = 0;  for (let ifrm of document.getElementsByTagName("iframe")) {       ifrm.id = "sample" + i;      ifrm.yotaidx = i;      window.yotasamples[i] = new YT.Player(ifrm.id, {events: {"onStateChange": playerStateChange}});        i++;  }}  function playerStateChange(event) {    console.log(event.data);    switch(event.data) {        case 0:            let myidx = event.target.getIframe().yotaidx;            event.target.getIframe().classList.remove("current");if (window.yotasamples[myidx+1]) { window.yotasamples[myidx+1].getIframe().classList.add("current");window.yotasamples[myidx+1].playVideo();} else{window.yotasamples[0].getIframe().classList.add("current")}                        break    }  }document.querySelector("iframe").classList.add("current");</script><input type=button style="position:fixed;bottom:0;left:0" value="Toggle View" onclick="document.documentElement.classList.toggle(this.dataset.targetclass);" data-targetclass=julekalenderview><style>html:not(.julekalenderview) iframe:not(.current) {display:none} </style>'
+
+        javascript_by_jonas = """<!DOCTYPE html>
+                                <html lang="en">
+                                <head>
+                                <meta charset="utf-8">
+                                <meta name="viewport" content="width=device-width, initial-scale=1">
+                                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+                                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+                                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+                                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+                                <title> {{ mediabyte.title }}</title>
+                                </head>
+                                <body>
+
+                                <script src="https://www.youtube.com/iframe_api"></script><script>function onYouTubeIframeAPIReady() { window.yotasamples = {}; let i = 0;  for (let ifrm of document.getElementsByTagName("iframe")) {       ifrm.id = "sample" + i;      ifrm.yotaidx = i;      window.yotasamples[i] = new YT.Player(ifrm.id, {events: {"onStateChange": playerStateChange}});        i++;  }}  function playerStateChange(event) {    console.log(event.data);    switch(event.data) {        case 0:            let myidx = event.target.getIframe().yotaidx;            event.target.getIframe().classList.remove("current");if (window.yotasamples[myidx+1]) { window.yotasamples[myidx+1].getIframe().classList.add("current");window.yotasamples[myidx+1].playVideo();} else{window.yotasamples[0].getIframe().classList.add("current")}                        break    }  }document.querySelector("iframe").classList.add("current");</script><input type=button style="position:fixed;bottom:0;left:0" value="Toggle View" onclick="document.documentElement.classList.toggle(this.dataset.targetclass);" data-targetclass=julekalenderview><style>html:not(.julekalenderview) iframe:not(.current) {display:none} </style>
+
+                                </body>
+                                </html>
+
+                                """
+
+        javascript_by_jonas = javascript_by_jonas.replace("{{ mediabyte.title }}", "YouTube " + self[0].title[:-2])
 
         iframe_collection_str += javascript_by_jonas
 
@@ -639,7 +660,7 @@ class Sample():
     def iframe(self, width=360, pause=False, title=False, center=True):
         """Returns IFrame format."""
 
-        return(iframe(self, width=360, pause=False, title=False, center=True))
+        return(iframe(self, width=width, pause=pause, title=title, center=center))
 
 
     def format(self, format='h1', center=True, simple_text=False,bold=False, time_format=True, bold_time = False, dot_time_sep=False):
@@ -892,7 +913,7 @@ class Cue():
     def iframe(self, width=360, pause=False, title=False, center=True):
         """Returns IFrame format."""
 
-        return(iframe(self, width=360, pause=False, title=False, center=True))
+        return(iframe(self, width=width, pause=pause, title=title, center=center))
 
 
     def update(self):
@@ -1148,7 +1169,7 @@ class Yota():
     def iframe(self, width=360, pause=False, title=False, center=True):
         """Returns IFrame format."""
 
-        return(iframe(self, width=360, pause=False, title=False, center=True))
+        return(iframe(self, width=width, pause=pause, title=title, center=center))
 
 
     def update(self):
