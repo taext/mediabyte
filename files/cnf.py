@@ -2,10 +2,12 @@ import sys
 
 def get_site_packages_path():
     """"Returns the first sys.path 'site-packages' or 'dist-packages' match."""
+    #print(f'sys.path: {sys.path}')
     for path in sys.path: 
-        if 'site-packages' in path or 'dist-packages' in path: 
-            new_path = path + os_sep + 'mediabyte'
-            return(new_path) 
+        if 'site-packages' in path or 'dist-packages' in path:
+            if '.local' not in path: 
+                new_path = path + os_sep + 'mediabyte'
+                return(new_path) 
 
 def get_os_file_separator():
     """Returns OS-dependent file separator character (Windows or other)."""
@@ -18,7 +20,7 @@ def get_os_file_separator():
 
 # hard-coded canonical package version number
 
-version_number = 'v0.8.6.8'
+version_number = 'v0.8.7.0'
 
 
 # constants for use in modules

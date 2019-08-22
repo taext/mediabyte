@@ -4,7 +4,7 @@ from . import cnf
 class MediabyteHashObj(dict):
     
     def __init__(self):
-        filename = cnf.package_path + cnf.os_sep + 'files' + cnf.os_sep + 'hash_dict.json'
+        filename = cnf.hash_dict_path
         with open(filename, 'r') as f:
             hash_dict = json.load(f)
         for key, value in hash_dict.items():

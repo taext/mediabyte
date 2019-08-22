@@ -577,6 +577,8 @@ class Convert():
             myMix = parse_object(omm_lines[0])
             for line in omm_lines[1:]:
                 myMix += parse_object(line)
+            # add to hash_dict.json
+            ono.add_to_hash_dict(myMix.omm_oneline())
             return(myMix)
 
         m = re.search('^[by]\.', omm_str)

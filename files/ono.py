@@ -12,19 +12,19 @@ if not os.path.isfile(hash_dict_filename):
         json.dump(tempDict, f)
 
 
-def build_hash_dict():
+# def build_hash_dict():
     
-    hash_dict = {}
+#     hash_dict = {}
 
-    for filename in omm_filenames:
-        tempMix = lib.Convert.omm(filename)
-        tempHash = tempMix.hash()
-        hash_dict[tempHash] = tempMix.omm_oneline()
-        for yotaObject in tempMix:
-            tempHash = yotaObject.hash()
-            hash_dict[tempHash] = yotaObject.omm
+#     for filename in omm_filenames:
+#         tempMix = lib.Convert.omm(filename)
+#         tempHash = tempMix.hash()
+#         hash_dict[tempHash] = tempMix.omm_oneline()
+#         for yotaObject in tempMix:
+#             tempHash = yotaObject.hash()
+#             hash_dict[tempHash] = yotaObject.omm
 
-    return hash_dict
+#     return hash_dict
 
 
 def write_hash_dict(hash_dict):
@@ -77,7 +77,7 @@ def add_to_hash_dict(mediabyte_str):
     
         
 
-def check_ono(ono_str, str=False):
+def check_ono(ono_str, string_arg=False):
     with open(hash_dict_filename, 'r') as f:
         hash_dict = json.load(f)
 
@@ -88,7 +88,7 @@ def check_ono(ono_str, str=False):
     for key in keys:
         if o_hash == key[:len(o_hash)]:
             #print(key)
-            if not str:
+            if not string_arg:
                 myObject = lib.Convert.omm(hash_dict[key])
                 #return myObject
                 results.append(myObject)
