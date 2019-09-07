@@ -134,7 +134,7 @@ class Convert():
 
     def docs():
         """Open online documentation in browser."""
-        sh.ell('google-chrome','https://github.com/taext/mediabyte/tree/master/user_guide')
+        sh.ell('google-chrome','https://github.com/taext/mediabyte/blob/master/user_guide/README.md')
 
 
     def _time_str(time_str):

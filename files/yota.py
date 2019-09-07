@@ -30,7 +30,6 @@ def iframe(self, width=360, pause=False, title=False, center=True):
     
     return(newUrl)
 
-
 def build_html(self):
 
     if self.tags:
@@ -43,8 +42,27 @@ def build_html(self):
             html_str += '  [' + item.html + ']'
     except:
         pass
+    
+    if isinstance(self, Drip):
+        html_str +=  '  ' + '(a)'
 
     return html_str    
+
+
+# def build_html(self):
+
+#     if self.tags:
+#         html_str = '<a href="' + str(self.url) + '" title="' + " ".join(self.tags) +  '">' + str(self.title) + '</a>'
+#     else:
+#         html_str = '<a href="' + str(self.url) + '">' + str(self.title) + '</a>'
+
+#     try: 
+#         for item in self.bits:        
+#             html_str += '  [' + item.html + ']'
+#     except:
+#         pass
+
+#     return html_str    
 
 
 def build_bits(bits):
@@ -1228,3 +1246,31 @@ class Yota():
             if char in string.ascii_letters:
                 calculated_hash = temp_hash[i:i+11]
                 return(calculated_hash)
+
+
+class Drip():
+    
+    def __init__(self, amazon_hash, title=None, tags=[]):
+        
+        self.hash = amazon_hash
+        self.url = 'https://www.amazon.com/dp/' + amazon_hash + '/'
+
+        self.first_name = amazon_hash
+        self.tags = tags
+
+        self.omm = 'a.' + amazon_hash
+        if title:
+            self.omm += '.' + title.replace(' ','_')
+            self.title = title
+        else:
+            self.title = ""
+        if tags:
+            for item in tags:
+                self.omm += '.' + item
+                
+        self.html = build_html(self)
+    
+    def __repr__(self):
+        return self.omm
+    
+        

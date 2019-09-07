@@ -130,6 +130,7 @@ Online mediabyte and Mixtape link [player](http://www.mediabyte.xyz/).
 
 Online YouTube search to [player](http://www.mediabyte.xyz/search).
 
+Native `a.amazonhash` Amazon link support.
 
 <br>
 
@@ -154,4 +155,4 @@ Currently the output options are:
 <br>
 
 
-                                        Updated May 2nd 2019
+                                        Updated Sep 7th 2019
