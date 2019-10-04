@@ -5,7 +5,11 @@ def get_site_packages_path():
     #print(f'sys.path: {sys.path}')
     for path in sys.path: 
         if 'site-packages' in path or 'dist-packages' in path:
-            if '.local' not in path: 
+            if flask_server == False:  # client execution environment
+                if '.local' not in path: # so exclude .local result from sys.path
+                    new_path = path + os_sep + 'mediabyte'
+                    return new_path
+            else: # server execution, so don't exclude .local result from sys.path
                 new_path = path + os_sep + 'mediabyte'
                 return(new_path) 
 
@@ -20,11 +24,12 @@ def get_os_file_separator():
 
 # hard-coded canonical package version number
 
-version_number = 'v0.8.7.1'
+version_number = 'v0.8.7.2'
 
 
 # constants for use in modules
 
+flask_server = False
 platform = sys.platform
 os_sep = get_os_file_separator()
 package_path = get_site_packages_path()
