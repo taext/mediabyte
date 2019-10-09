@@ -100,7 +100,7 @@ Syntax highlighting and `.omm` file association using the contained Atom [packag
 
 Search YouTube directly and get results in **Mixtape** with `youtube('copenhagen 10')`.
 
-Search auto-generated subtitles with `Yota.srt_search` and `Mixtape.srt_search`. (linux only) (beta)
+Search auto-generated subtitles with `Yota.srt_search` and `Mixtape.srt_search`. (linux only) (beta, buggy)
 
 **Mixtape** files [supports](https://github.com/taext/mediabyte/blob/master/user_guide/Demo:%20Mixtape%20Arbitrary%20White-Space.ipynb) arbitrary white-space. (freestyle formatting)
 
