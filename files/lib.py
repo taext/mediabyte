@@ -30,7 +30,7 @@ class Convert():
         o = onoObject.MediabyteHashObj()
         result = []
         for item in o: 
-            if search_term in o[item] or search_term in item:
+            if search_term.lower() in o[item].lower() or search_term.lower() in item.lower():
                 exclusive_match = False
                 if exclusive_terms:
 
@@ -106,9 +106,7 @@ class Convert():
         
         with open(omm_filename,'w') as f:
             for item in results2:
-                # NB: Hacky, filtering y.y results (because of faulty .y. mixtape splitting)
-                #m = re.search('^y', item)
-                #if not m:
+
                 f.write('y.' + item)
                 f.write('\n')
 
@@ -125,11 +123,11 @@ class Convert():
         
         with open(omm_filename,'w') as f:
             for item in results2[21:]:
-                # NB: Hacky, filtering y.y results (because of faulty .y. mixtape splitting)
-                m = re.search('^y', item)
-                if not m:
-                    f.write('y.' + item)
-                    f.write('\n')
+                # # NB: Hacky, filtering y.y results (because of faulty .y. mixtape splitting)
+                # m = re.search('^y', item)
+                # if not m:
+                f.write('y.' + item)
+                f.write('\n')
 
 
     def docs():
@@ -226,9 +224,9 @@ class Convert():
 
         res = yno.main(item)
         time_code_list = res[0] # get time code occurrences
-        m = re.findall('\.y\.', item) # test for Mixtape
+        m = re.findall('\.\.', item) # test for Mixtape
         if m: 
-            if len(m) >= 1:  # '.y.' match means Mixtape
+            if len(m) >= 1:  # '..' match means Mixtape
                 answer = 'Mixtape'
         # if no Mixtape match
         elif len(time_code_list) == 1: # 1 time code means Cue
@@ -421,7 +419,7 @@ class Convert():
 
             res = yno.main(item)
             time_code_list = res[0] # get time code occurrences
-            m = re.findall('\.y\.', item) # test for Mixtape
+            m = re.findall('\.\.', item) # test for Mixtape
             m2 = re.search('^b\.', item)  # test for Bit.Link
             m3 = re.search('\.mp3\W', item) # test for Bit.Mp3
             # Bit matched
@@ -430,7 +428,7 @@ class Convert():
             elif m2:
                 answer = 'bit.Mp3'
             elif m: 
-                if len(m) >= 1:  # '.y.' match means Mixtape
+                if len(m) >= 1:  # '..' match means Mixtape
                     answer = 'Mixtape'
             # if no Mixtape match
             elif len(time_code_list) == 1: # 1 time code means Cue
@@ -500,14 +498,14 @@ class Convert():
 
         def split_yotas(yotas_str):
 
-            m = re.search('\.y\.', yotas_str)
+            m = re.search('\.\.', yotas_str)
             if m: # check not matching y.youtubehash (hash starting with y)
-                my_list = yotas_str.split('.y.')
+                my_list = yotas_str.split('..')
                 new_list = [my_list[0]]
-                for item in my_list[1:]:
-                    new_str = 'y.' + item
-                    new_list.append(new_str)
-                return(new_list)
+                # for item in my_list[1:]:
+                #     new_str = 'y.' + item
+                #     new_list.append(new_str)
+                return(my_list)
             else:
                 return(yotas_str)
 

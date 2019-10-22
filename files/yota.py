@@ -95,6 +95,18 @@ class Mixtape():
         self.content = content_list
         self.find = {sample.first_name : sample for sample in self.content}
 
+    def __matmul__(self, search_term):
+
+        result = []
+        for item in self:
+            if search_term.replace(" ","_") in item.omm:
+                result.append(item)
+        if len(result) >= 1:
+            result_mix = Mixtape(result[0])
+            for item in result[1:]:
+                result_mix += item
+            return result_mix
+
 
     def __len__(self):
         """Show length in seconds."""
@@ -310,9 +322,9 @@ class Mixtape():
 
         result = ""
         for item in self:
-            result += item.omm + "."
+            result += item.omm + ".."
         
-        result = result[:-1]
+        result = result[:-2]
 
         return(result)
 
