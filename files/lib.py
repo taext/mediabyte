@@ -382,7 +382,7 @@ class Convert():
             if len(parsing_res[1]) > 0:
                 title = parsing_res[1][0]
             else:
-                title = 'My' + type_result
+                title = ""
 
             
 
@@ -391,6 +391,8 @@ class Convert():
                 # Sample hash bit object(s)
                 if len(parsing_res[4]) > 0:
                     mySample = yota.Sample(url=parsing_res[2], time_start=Convert._time_str(parsing_res[0][0]), time_end=Convert._time_str(parsing_res[0][1]), title=title, tags=parsing_res[3], bits=parsing_res[4])
+                elif title == "":
+                    mySample = yota.Sample(url=parsing_res[2], time_start=Convert._time_str(parsing_res[0][0]), time_end=Convert._time_str(parsing_res[0][1]), tags=parsing_res[3])
                 else:
                     mySample = yota.Sample(url=parsing_res[2], time_start=Convert._time_str(parsing_res[0][0]), time_end=Convert._time_str(parsing_res[0][1]), title=title, tags=parsing_res[3])
                 return(mySample)
@@ -398,6 +400,8 @@ class Convert():
                 # Cue has bit object(s)
                 if len(parsing_res[4]) > 0:
                     myCue = yota.Cue(parsing_res[2], time_start=parsing_res[0][0], title=title, tags=parsing_res[3], bits=parsing_res[4])
+                elif title == "":
+                    myCue = yota.Cue(parsing_res[2], time_start=parsing_res[0][0], tags=parsing_res[3])
                 else:
                     myCue = yota.Cue(parsing_res[2], time_start=parsing_res[0][0], title=title, tags=parsing_res[3])
                 return(myCue)
@@ -405,6 +409,8 @@ class Convert():
                 # Yota has bit object(s)
                 if len(parsing_res) == 5:
                     myYota = yota.Yota(parsing_res[2], title=title, tags=parsing_res[3], bits=parsing_res[4])
+                elif title == "":
+                    myYota = yota.Yota(parsing_res[2], tags=parsing_res[3])
                 else:
                     myYota = yota.Yota(parsing_res[2], title=title, tags=parsing_res[3])
                 return(myYota)

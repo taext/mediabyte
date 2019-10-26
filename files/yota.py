@@ -148,7 +148,13 @@ class Mixtape():
 
         yotas_string = ""
         for i, sample in enumerate(self.content):
-            yotas_string += str(i) + ". " + sample.title + "\n"
+            if sample.title:
+                yotas_string += str(i) + ". " + sample.title + "\n"
+            else:
+                yota_type = str(type(sample)).split(".")[-1][:-2]                                      
+                type_str = "My" + yota_type
+
+                yotas_string += str(i) + ". " + type_str + "\n"
 
         return(str(yotas_string))
 
@@ -536,8 +542,12 @@ class Sample():
             if (i + 1) < len(self.tags):
                 tag_string += ', '
         tag_string += ')'
+        if self.title == "":
+            title = "mySample"
+        else:
+            title = self.title
         
-        result = self.title + tag_string + '  ' + str(self.time())
+        result = title + tag_string + '  ' + str(self.time())
 
         if self.bits:
             result += '  ['
@@ -784,7 +794,7 @@ class Cue():
                     self.tags.pop(0)
 
         else:
-            self.title = None
+            self.title = ""
 
 
         self.html = build_html(self)
@@ -796,7 +806,7 @@ class Cue():
         #     for item in self.tags:
         #         m = re._search('http', item)
         #         if m:
-        #             link_tags_read.append(item)
+        #             link_tags_read.append(item)class Cueclass Cue
 
         #     self.links = link_tags_read
 
@@ -885,6 +895,8 @@ class Cue():
         result = ""
         if self.title:
             result = self.title + result
+        else:
+            result = "MyCue" + result
 
         if self.tags:
             tag_string = "  ("                      # build tag string
@@ -1158,6 +1170,8 @@ class Yota():
         result = ""
         if self.title:
             result = self.title + result
+        else:
+            result = "myYota" + result
 
         if self.tags:
             tag_string = "  ("                      # build tag string
