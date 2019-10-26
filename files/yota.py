@@ -280,7 +280,7 @@ class Mixtape():
         iframe_collection_str = ""
         for item in self:
             new_url = item.url[:-1] + "0" + "&enablejsapi=1"
-            new_str = '<iframe width="' + str(width) + '" height="' + str(int(width * 0.6)) + '" title="' + item.title + '" src="' + new_url + '" frameborder=0 allowfullscreen></iframe>'
+            new_str = '<iframe width="' + str(width) + '" height="' + str(int(width * 0.6)) + '" src="' + new_url + '" frameborder=0 allowfullscreen></iframe>'
             if titles:
                 new_str = '<h3>' + repr(item) + '</h3> <br>' + new_str
             iframe_collection_str += new_str + " "
