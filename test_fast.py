@@ -87,7 +87,7 @@ class Testomm(unittest.TestCase):
     def test_yota_no_title(self):
         cue_test_str = 'y.8ZtHhF9Lt_8.podcast.intro'
         result = lib.Convert.omm(cue_test_str)
-        self.assertEqual(result.__repr__(), 'myYota  (podcast, intro)')
+        self.assertEqual(result.__repr__(), 'myYota  (podcast, intro)     o.fd3faf525a1')
         self.assertEqual(result.tags, ['podcast','intro'])
         self.assertEqual(result.youtube_hash, '8ZtHhF9Lt_8')
 
@@ -123,7 +123,7 @@ class Testomm(unittest.TestCase):
         
         mixtape_test_str = 'y.8ZtHhF9Lt_8.1s.Welcome_&_Sponsors.podcast.intro.1m58s..y.8ZtHhF9Lt_8.1m59s.Intro_banter.podcast.episode.overview.3m46s..y.8ZtHhF9Lt_8.3m47s.Overview.episode.overview.6m16s..y.8ZtHhF9Lt_8.6m17s.Sponsor:_ITPro_TV.sponsor.10m13s'
         mixtapeObj = lib.Convert.omm(mixtape_test_str)
-        self.assertEqual(mixtapeObj.__repr__()[3:10], 'Welcome')
+        self.assertEqual(mixtapeObj.__repr__()[:17], 'mediabyte.Mixtape')
         self.assertEqual(len(mixtapeObj.content), 4)
         self.assertEqual(mixtapeObj[0].tags, ['podcast','intro'])
         self.assertEqual(mixtapeObj[0].time_end, 118)
@@ -133,7 +133,7 @@ class Testomm(unittest.TestCase):
         
         mixtape_test_str = 'y.8ZtHhF9Lt_8.1s.Welcome_&_Sponsors.1m58s..y.8ZtHhF9Lt_8.1m59s.Intro_banter.podcast.episode.overview.3m46s..y.8ZtHhF9Lt_8.3m47s.Overview.episode.overview.6m16s..y.8ZtHhF9Lt_8.6m17s.Sponsor:_ITPro_TV.10m13s'
         mixtapeObj = lib.Convert.omm(mixtape_test_str)
-        self.assertEqual(mixtapeObj.__repr__()[3:10], 'Welcome')
+        self.assertEqual(mixtapeObj.__repr__()[:17], 'mediabyte.Mixtape')
         self.assertEqual(len(mixtapeObj.content), 4)
         self.assertEqual(mixtapeObj[0].time_end, 118)
         self.assertEqual(mixtapeObj[0].youtube_hash, '8ZtHhF9Lt_8')
@@ -142,7 +142,7 @@ class Testomm(unittest.TestCase):
         
         mixtape_test_str = 'y.8ZtHhF9Lt_8.1s.podcast.intro.1m58s..y.8ZtHhF9Lt_8.1m59s.podcast.episode.overview.3m46s..y.8ZtHhF9Lt_8.3m47s.episode.overview.6m16s..y.8ZtHhF9Lt_8.6m17s.sponsor.10m13s'
         mixtapeObj = lib.Convert.omm(mixtape_test_str)
-        self.assertEqual(mixtapeObj.__repr__()[3:11], 'MySample')
+        self.assertEqual(mixtapeObj.__repr__()[:17], 'mediabyte.Mixtape')
         self.assertEqual(len(mixtapeObj.content), 4)
         self.assertEqual(mixtapeObj[0].tags, ['podcast','intro'])
         self.assertEqual(mixtapeObj[0].time_end, 118)
@@ -152,7 +152,7 @@ class Testomm(unittest.TestCase):
         
         mixtape_test_str = 'y.8ZtHhF9Lt_8.1s.1m58s..y.8ZtHhF9Lt_8.1m59s.3m46s..y.8ZtHhF9Lt_8.3m47s.6m16s..y.8ZtHhF9Lt_8.6m17s.10m13s'
         mixtapeObj = lib.Convert.omm(mixtape_test_str)
-        self.assertEqual(mixtapeObj.__repr__()[3:11], 'MySample')
+        self.assertEqual(mixtapeObj.__repr__()[:17], 'mediabyte.Mixtape')
         self.assertEqual(len(mixtapeObj.content), 4)
         self.assertEqual(mixtapeObj[0].time_end, 118)
         self.assertEqual(mixtapeObj[0].youtube_hash, '8ZtHhF9Lt_8')
@@ -161,7 +161,7 @@ class Testomm(unittest.TestCase):
         
         mixtape_test_str = 'y.8ZtHhF9Lt_8..y.8ZtHhF9Lt_8..y.8ZtHhF9Lt_8.3m47s.6m16s..y.8ZtHhF9Lt_8.6m17s.10m13s'
         mixtapeObj = lib.Convert.omm(mixtape_test_str)
-        self.assertEqual(mixtapeObj.__repr__()[3:9], 'MyYota')
+        self.assertEqual(mixtapeObj.__repr__()[:17], 'mediabyte.Mixtape')
         self.assertEqual(len(mixtapeObj.content), 4)
         self.assertEqual(mixtapeObj[0].youtube_hash, '8ZtHhF9Lt_8')
 
@@ -484,7 +484,7 @@ class Testomm(unittest.TestCase):
 
     def test_yota_with_bits_second_bit_omm(self):
         myYotaWithBits = lib.Convert.omm('y._QYngRrbsKo.My_YouTube_Clip.b.2TKY42w.Sec_Now.security.podcast.b.2TKY42w.Sec_Now.mp3.security.podcast.6m1s.7m25s.b.2TKY42w.Sec_Now.mp3.security.podcast.8m1s.9m25s')
-        self.assertEqual(myYotaWithBits.__repr__(), 'My YouTube Clip  [Sec Now, Sec Now, Sec Now]')
+        self.assertEqual(myYotaWithBits.__repr__(), 'My YouTube Clip  [Sec Now, Sec Now, Sec Now]     o.c2c219421b5')
 
 
 ## BIT ONLY PARSING

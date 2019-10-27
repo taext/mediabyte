@@ -19,6 +19,8 @@ def iframe(self, width=360, pause=False, title=False, center=True):
         height = int(width * 0.6)
         url = url.replace('216', str(height))
     newUrl = url.replace('XXXXX', self.url)
+    if self.title == None:
+        self.title = ""
     newUrl = newUrl.replace('YYYYY', self.title)
     if pause:
         newUrl = newUrl.replace('autoplay=1','autoplay=0')
@@ -32,10 +34,19 @@ def iframe(self, width=360, pause=False, title=False, center=True):
 
 def build_html(self):
 
-    if self.tags:
-        html_str = '<a href="' + str(self.url) + '" title="' + " ".join(self.tags) +  '">' + str(self.title) + '</a>'
+    if not self.title == None or self.title == "":
+        raw_str = str(type(self))
+        second_str = raw_str.split(".")[-1][:-2]
+        object_type = second_str
+        object_type_str = "My" + object_type
+        title = object_type_str
     else:
-        html_str = '<a href="' + str(self.url) + '">' + str(self.title) + '</a>'
+        title = self.title
+
+    if self.tags:
+        html_str = '<a href="' + str(self.url) + '" title="' + " ".join(self.tags) +  '">' + title + '</a>'
+    else:
+        html_str = '<a href="' + str(self.url) + '">' + title + '</a>'
 
     try: 
         for item in self.bits:        
@@ -146,10 +157,11 @@ class Mixtape():
 
     def __repr__(self):
 
-        yotas_string = ""
+        yotas_string = "mediabyte.Mixtape          " + "o." + self.hash() + "\n"
+        yotas_string += "-------------------------------------------\n"
         for i, sample in enumerate(self.content):
             if sample.title:
-                yotas_string += str(i) + ". " + sample.title + "\n"
+                yotas_string += str(i) + ". " + sample.__repr__() + "\n"
             else:
                 yota_type = str(type(sample)).split(".")[-1][:-2]                                      
                 type_str = "My" + yota_type
@@ -869,7 +881,7 @@ class Cue():
         except:
             pass
 
-
+        self.html = build_html(self)
 
     def play(self):
         """Open sample in tab in browser."""
@@ -1188,6 +1200,8 @@ class Yota():
                 result += item.title + ', '
 
             result = result[:-2] + ']'
+
+        result += "     " + "o." + self.hash()
 
         
         
