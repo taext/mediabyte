@@ -168,9 +168,9 @@ class Testomm(unittest.TestCase):
         self.assertEqual(mixtapeObj[0].youtube_hash, '8ZtHhF9Lt_8')
 
     def test_mixtape_oneline_format(self):
-        mixtape_test_str = 'y.drRQVI58c-E.1m18s.Koreans_on_Metoo.interview.asia.2m0s..y.drRQVI58c-E.1m18s.Koreans_on_Metoo.interview.asia.2m0s'
+        mixtape_test_str = 'y.drRQVI58c-E.1m18s.Koreans_on_Metoo.interview.asia.2m..y.drRQVI58c-E.1m18s.Koreans_on_Metoo.interview.asia.2m'
         mixtapeObj = lib.Convert.omm(mixtape_test_str)
-        self.assertEqual(mixtapeObj.omm_oneline(), 'y.drRQVI58c-E.1m18s.Koreans_on_Metoo.interview.asia.2m0s..y.drRQVI58c-E.1m18s.Koreans_on_Metoo.interview.asia.2m0s')
+        self.assertEqual(mixtapeObj.omm_oneline(), 'y.drRQVI58c-E.1m18s.Koreans_on_Metoo.interview.asia.2m..y.drRQVI58c-E.1m18s.Koreans_on_Metoo.interview.asia.2m')
 
 
 ## YOUTUBE URL PARSING
@@ -191,25 +191,25 @@ class Testomm(unittest.TestCase):
     def test_youtube_url_parsing_2(self):
         youtube_url_second_format = 'https://youtu.be/NI1L8ZJgA9o?t=60s'
         cue_object = lib.Convert.omm(youtube_url_second_format)
-        self.assertEqual(cue_object.omm, 'y.NI1L8ZJgA9o.1m0s')
+        self.assertEqual(cue_object.omm, 'y.NI1L8ZJgA9o.1m')
 
     # with time code, from YouTube share link with time code (new format)
     def test_youtube_url_parsing_4(self):
         youtube_url_second_format = 'https://youtu.be/NI1L8ZJgA9o?t=120'
         cue_object = lib.Convert.omm(youtube_url_second_format)
-        self.assertEqual(cue_object.omm, 'y.NI1L8ZJgA9o.2m0s')
+        self.assertEqual(cue_object.omm, 'y.NI1L8ZJgA9o.2m')
 
     # with time code, from clicking YouTube logo when in embedded player
     def test_youtube_url_parsing_3(self):
         youtube_url_third_format = 'https://www.youtube.com/watch?time_continue=60&v=drRQVI58c-E'
         cue_object = lib.Convert.omm(youtube_url_third_format)
-        self.assertEqual(cue_object.omm, 'y.drRQVI58c-E.1m0s')
+        self.assertEqual(cue_object.omm, 'y.drRQVI58c-E.1m')
 
 
 ## JAVASCRIPT HTML PLAYER Mixtape.player() 
 
     def test_mixtape_player(self):
-        test_mix_object = lib.Convert.omm('y.drRQVI58c-E.1m18s.Koreans_on_Metoo.interview.asia.2m0s..y.drRQVI58c-E.1m18s.Koreans_on_Metoo.interview.asia.2m0s')
+        test_mix_object = lib.Convert.omm('y.drRQVI58c-E.1m18s.Koreans_on_Metoo.interview.asia.2m..y.drRQVI58c-E.1m18s.Koreans_on_Metoo.interview.asia.2m')
         obj_jule = test_mix_object.player()
         test_jule = '<iframe width="360" height="216" title="Koreans on Metoo" src="https://www.youtube.com/embed/drRQVI58c-E?start=78&end=120&rel=0&autoplay=0&enablejsapi=1" frameborder=0 allowfullscreen></iframe> <iframe width="360" height="216" title="Koreans on Metoo" src="https://www.youtube.com/embed/drRQVI58c-E?start=78&end=120&rel=0&autoplay=0&enablejsapi=1" frameborder=0 allowfullscreen></iframe> <!DOCTYPE html>\n                                <html lang="en">\n                                <head>\n                                <meta charset="utf-8">\n                                <meta name="viewport" content="width=device-width, initial-scale=1">\n                                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">\n                                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>\n                                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>\n                                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>\n                                <title> YouTube Koreans on Met</title>\n                                </head>\n                                <body>\n\n                                <script src="https://www.youtube.com/iframe_api"></script><script>function onYouTubeIframeAPIReady() { window.yotasamples = {}; let i = 0;  for (let ifrm of document.getElementsByTagName("iframe")) {       ifrm.id = "sample" + i;      ifrm.yotaidx = i;      window.yotasamples[i] = new YT.Player(ifrm.id, {events: {"onStateChange": playerStateChange}});        i++;  }}  function playerStateChange(event) {    console.log(event.data);    switch(event.data) {        case 0:            let myidx = event.target.getIframe().yotaidx;            event.target.getIframe().classList.remove("current");if (window.yotasamples[myidx+1]) { window.yotasamples[myidx+1].getIframe().classList.add("current");window.yotasamples[myidx+1].playVideo();} else{window.yotasamples[0].getIframe().classList.add("current")}                        break    }  }document.querySelector("iframe").classList.add("current");</script><input type=button style="position:fixed;bottom:0;left:0" value="Toggle View" onclick="document.documentElement.classList.toggle(this.dataset.targetclass);" data-targetclass=julekalenderview><style>html:not(.julekalenderview) iframe:not(.current) {display:none} </style>\n\n                                </body>\n                                </html>\n\n'
         self.assertEqual(obj_jule[:1000], test_jule[:1000])
@@ -249,7 +249,7 @@ class Testomm(unittest.TestCase):
         yota_object.tags = ['interview','asia']
         yota_object.title = 'Koreans on Metoo'
         yota_object.update()
-        self.assertEqual(yota_object.omm, 'y.drRQVI58c-E.5m0s.Koreans_on_Metoo.interview.asia')
+        self.assertEqual(yota_object.omm, 'y.drRQVI58c-E.5m.Koreans_on_Metoo.interview.asia')
 
     def test_sample_manual_attributes(self):
 
@@ -257,7 +257,7 @@ class Testomm(unittest.TestCase):
         yota_object.tags = ['interview','asia']
         yota_object.title = 'Koreans on Metoo'
         yota_object.update()
-        self.assertEqual(yota_object.omm, 'y.drRQVI58c-E.5m0s.Koreans_on_Metoo.interview.asia.5m10s')
+        self.assertEqual(yota_object.omm, 'y.drRQVI58c-E.5m.Koreans_on_Metoo.interview.asia.5m10s')
     
 
 # YOTA TO CUE TO SAMPLE TO MIXTAPE TRAVERSAL
@@ -276,14 +276,14 @@ class Testomm(unittest.TestCase):
         test_cue = lib.Convert.omm('y.drRQVI58c-E.Koreans_on_Metoo.interview.asia.1m18s')
         test_cue.omm += '.2m'
         newer = lib.Convert.omm(test_cue.omm)
-        test_str = 'y.drRQVI58c-E.1m18s.Koreans_on_Metoo.interview.asia.2m0s'
+        test_str = 'y.drRQVI58c-E.1m18s.Koreans_on_Metoo.interview.asia.2m'
         self.assertEqual(newer.omm, test_str) # test for sample
 
     def test_sample_to_mixtape(self):
-        test_sample = lib.Convert.omm('y.drRQVI58c-E.1m18s.Koreans_on_Metoo.interview.asia.2m0s')
+        test_sample = lib.Convert.omm('y.drRQVI58c-E.1m18s.Koreans_on_Metoo.interview.asia.2m')
         mixtape = test_sample.omm + '..' + test_sample.omm
         mix_obj = lib.Convert.omm(mixtape)
-        test_str = 'y.drRQVI58c-E.1m18s.Koreans_on_Metoo.interview.asia.2m0s..y.drRQVI58c-E.1m18s.Koreans_on_Metoo.interview.asia.2m0s'
+        test_str = 'y.drRQVI58c-E.1m18s.Koreans_on_Metoo.interview.asia.2m..y.drRQVI58c-E.1m18s.Koreans_on_Metoo.interview.asia.2m'
         self.assertEqual(mix_obj.omm_oneline(), test_str)
 
 
@@ -295,11 +295,11 @@ class Testomm(unittest.TestCase):
 
     def test_mixtape_with_only_cues(self):
         yota_object = lib.Convert.omm('y.drRQVI58c-E.5m..y.NI1L8ZJgA9o.5m')
-        self.assertEqual(yota_object[1].omm, 'y.NI1L8ZJgA9o.5m0s')
+        self.assertEqual(yota_object[1].omm, 'y.NI1L8ZJgA9o.5m')
 
     def test_mixtape_with_cue_and_yota(self):
         yota_object = lib.Convert.omm('y.drRQVI58c-E..y.NI1L8ZJgA9o.5m')
-        self.assertEqual(yota_object[1].omm, 'y.NI1L8ZJgA9o.5m0s')
+        self.assertEqual(yota_object[1].omm, 'y.NI1L8ZJgA9o.5m')
 
     def test_mixtape_with_yota_and_cue(self):
         yota_object = lib.Convert.omm('y.drRQVI58c-E.5m..y.NI1L8ZJgA9o')
@@ -329,20 +329,20 @@ class Testomm(unittest.TestCase):
         cue_object = lib.Convert.omm('y.drRQVI58c-E.5m')
         cue_object2 = lib.Convert.omm('y.NI1L8ZJgA9o.7m')
         mixtape_object = cue_object + cue_object2
-        self.assertEqual(mixtape_object[1].omm, 'y.NI1L8ZJgA9o.7m0s')
+        self.assertEqual(mixtape_object[1].omm, 'y.NI1L8ZJgA9o.7m')
 
     def test_sample_plus_sample_equals_mixtape(self):
         yota_object = lib.Convert.omm('y.drRQVI58c-E.5m.6m')
         yota_object2 = lib.Convert.omm('y.NI1L8ZJgA9o.7m.8m')
         mixtape_object = yota_object + yota_object2
-        self.assertEqual(mixtape_object[1].omm, 'y.NI1L8ZJgA9o.7m0s.8m0s')
+        self.assertEqual(mixtape_object[1].omm, 'y.NI1L8ZJgA9o.7m.8m')
 
 
     def test_yota_plus_cue_equals_mixtape(self):
         yota_object = lib.Convert.omm('y.drRQVI58c-E')
         yota_object2 = lib.Convert.omm('y.NI1L8ZJgA9o.7m')
         mixtape_object = yota_object + yota_object2
-        self.assertEqual(mixtape_object[1].omm, 'y.NI1L8ZJgA9o.7m0s')
+        self.assertEqual(mixtape_object[1].omm, 'y.NI1L8ZJgA9o.7m')
 
     def test_cue_plus_yota_equals_mixtape(self):
         yota_object = lib.Convert.omm('y.drRQVI58c-E.7m')
@@ -354,13 +354,13 @@ class Testomm(unittest.TestCase):
         yota_object = lib.Convert.omm('y.drRQVI58c-E.5m')
         yota_object2 = lib.Convert.omm('y.NI1L8ZJgA9o.7m.8m')
         mixtape_object = yota_object + yota_object2
-        self.assertEqual(mixtape_object[1].omm, 'y.NI1L8ZJgA9o.7m0s.8m0s')
+        self.assertEqual(mixtape_object[1].omm, 'y.NI1L8ZJgA9o.7m.8m')
 
     def test_sample_plus_cue_equals_mixtape(self):
         yota_object = lib.Convert.omm('y.drRQVI58c-E.5m.6m3s')
         yota_object2 = lib.Convert.omm('y.NI1L8ZJgA9o.7m')
         mixtape_object = yota_object + yota_object2
-        self.assertEqual(mixtape_object[1].omm, 'y.NI1L8ZJgA9o.7m0s')
+        self.assertEqual(mixtape_object[1].omm, 'y.NI1L8ZJgA9o.7m')
 
     def test_sample_plus_yota_equals_mixtape(self):
         yota_object = lib.Convert.omm('y.drRQVI58c-E.5m.6m3s')
