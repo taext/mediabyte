@@ -8,7 +8,7 @@
 
 [**Mixtape from .omm file**](https://github.com/taext/mediabyte/blob/master/user_guide/Demo:%20Mixtape%20from%20omm%20file.ipynb) - How to use the Mixtape file format
 
-[**Mixtape File Custom Formatting**](https://github.com/taext/mediabyte/blob/master/user_guide/Demo:%20Mixtape%20File%20Custom%20Formatting.ipynb) - Learn how to use the awesome Mixtape file custom formatting
+[**Mixtape Arbitrary White-Space**](https://github.com/taext/mediabyte/blob/master/user_guide/Demo:%20Mixtape%20Arbitrary%20White-Space.ipynb) - Learn how to use Mixtape file freestyle formatting
 
 [**Mp3 Mixtape Cutting**](https://github.com/taext/mediabyte/blob/master/user_guide/Demo:%20bit.Mp3%20Mixtape%20Cutting.ipynb) - How to cut and remix MP3 Mixtape
 
