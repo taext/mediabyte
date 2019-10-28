@@ -3,7 +3,7 @@ import copy
 import hashlib
 from . import bno, yno
 from . import bit
-from . import srt_search_function as srt
+from . import search_srt as srt
 from . import omm_file_parser, sh
 from . import lib
 import string
@@ -19,8 +19,6 @@ def iframe(self, width=360, pause=False, title=False, center=True):
         height = int(width * 0.6)
         url = url.replace('216', str(height))
     newUrl = url.replace('XXXXX', self.url)
-    if self.title == None:
-        self.title = ""
     newUrl = newUrl.replace('YYYYY', self.title)
     if pause:
         newUrl = newUrl.replace('autoplay=1','autoplay=0')
@@ -34,19 +32,10 @@ def iframe(self, width=360, pause=False, title=False, center=True):
 
 def build_html(self):
 
-    if not self.title == None or self.title == "":
-        raw_str = str(type(self))
-        second_str = raw_str.split(".")[-1][:-2]
-        object_type = second_str
-        object_type_str = "My" + object_type
-        title = object_type_str
-    else:
-        title = self.title
-
     if self.tags:
-        html_str = '<a href="' + str(self.url) + '" title="' + " ".join(self.tags) +  '">' + title + '</a>'
+        html_str = '<a href="' + str(self.url) + '" title="' + " ".join(self.tags) +  '">' + str(self.title) + '</a>'
     else:
-        html_str = '<a href="' + str(self.url) + '">' + title + '</a>'
+        html_str = '<a href="' + str(self.url) + '">' + str(self.title) + '</a>'
 
     try: 
         for item in self.bits:        
@@ -157,16 +146,15 @@ class Mixtape():
 
     def __repr__(self):
 
-        yotas_string = "mediabyte.Mixtape          " + "o." + self.hash() + "\n"
-        yotas_string += "-------------------------------------------\n"
+        yotas_string = "mediabyte.Mixtape" + " " * 35 + "o." + self.hash() + "\n"
+        yotas_string += "-" * 65 + "\n"
         for i, sample in enumerate(self.content):
             if sample.title:
-                yotas_string += str(i) + ". " + sample.__repr__() + "\n"
+                title = sample.title
             else:
-                yota_type = str(type(sample)).split(".")[-1][:-2]                                      
-                type_str = "My" + yota_type
-
-                yotas_string += str(i) + ". " + type_str + "\n"
+                type_result = str(type(sample)).split(".")[-1][:-2]
+                title = "My" + type_result
+            yotas_string += str(i) + ". " + title + " " * (50 - (len(title) + len(str(i)))) + "o." + sample.hash() + "\n"
 
         return(str(yotas_string))
 
@@ -292,7 +280,7 @@ class Mixtape():
         iframe_collection_str = ""
         for item in self:
             new_url = item.url[:-1] + "0" + "&enablejsapi=1"
-            new_str = '<iframe width="' + str(width) + '" height="' + str(int(width * 0.6)) + '" src="' + new_url + '" frameborder=0 allowfullscreen></iframe>'
+            new_str = '<iframe width="' + str(width) + '" height="' + str(int(width * 0.6)) + '" title="' + item.title + '" src="' + new_url + '" frameborder=0 allowfullscreen></iframe>'
             if titles:
                 new_str = '<h3>' + repr(item) + '</h3> <br>' + new_str
             iframe_collection_str += new_str + " "
@@ -318,7 +306,7 @@ class Mixtape():
 
                                 """
 
-        javascript_by_jonas = javascript_by_jonas.replace("{{ mediabyte.title }}", "YouTube " + self[0].title[:-2])
+        javascript_by_jonas = javascript_by_jonas.replace("{{ mediabyte.title }}", "YouTube " + self.content[0].title[:-2])
 
         iframe_collection_str += javascript_by_jonas
 
@@ -366,7 +354,6 @@ class Mixtape():
 
         # check Mixtape only contains Yota objects
         if check_mixtape_for_only_yota(self):
-            vlc_str = ""
             url_list = []
             for item in self:
                 basic_url = 'https://youtube.com/watch?v=' + item.omm[2:13]
@@ -442,7 +429,7 @@ class Sample():
 
     def __init__(self, url, time_start=None, time_end=None, title=None, tags=[], bits=[]):
 
-            youtube_hash_match = re.search('[0-9a-zA-Z_\-]{11}', url)   # extract 11-character youtube hash
+            youtube_hash_match = re.search(r'[0-9a-zA-Z_\-]{11}', url)   # extract 11-character youtube hash
             self.youtube_hash = youtube_hash_match.group(0)
             self.parent_url = 'https://www.youtube.com/watch?v=' + url
             self.first_name = self.youtube_hash[:3]
@@ -547,18 +534,21 @@ class Sample():
 
     def __repr__(self):
         
+        if self.tags:
+            tag_string = "  ("                      # build tag string
+            for i, tag in enumerate(self.tags):
+                tag_string += str(tag)
+                if (i + 1) < len(self.tags):
+                    tag_string += ', '
+            tag_string += ')'
+        else:
+            tag_string = ""
         
-        tag_string = "  ("                      # build tag string
-        for i, tag in enumerate(self.tags):
-            tag_string += str(tag)
-            if (i + 1) < len(self.tags):
-                tag_string += ', '
-        tag_string += ')'
         if self.title == "":
-            title = "mySample"
+            title = "MySample"
         else:
             title = self.title
-        
+
         result = title + tag_string + '  ' + str(self.time())
 
         if self.bits:
@@ -568,7 +558,7 @@ class Sample():
         
             result = result[:-2] + ']'
 
-        
+        result += " " * (47 - len(title) - len(tag_string) - len(self.time())) + "o." + self.hash()
         
         return(result)
 
@@ -806,7 +796,7 @@ class Cue():
                     self.tags.pop(0)
 
         else:
-            self.title = ""
+            self.title = None
 
 
         self.html = build_html(self)
@@ -818,7 +808,7 @@ class Cue():
         #     for item in self.tags:
         #         m = re._search('http', item)
         #         if m:
-        #             link_tags_read.append(item)class Cueclass Cue
+        #             link_tags_read.append(item)
 
         #     self.links = link_tags_read
 
@@ -881,7 +871,7 @@ class Cue():
         except:
             pass
 
-        self.html = build_html(self)
+
 
     def play(self):
         """Open sample in tab in browser."""
@@ -904,11 +894,13 @@ class Cue():
                 tag_string += ', '
         tag_string += ')'
 
-        result = ""
+        #result = ""
         if self.title:
-            result = self.title + result
+            title = self.title
         else:
-            result = "MyCue" + result
+            title = "MyCue"
+            
+        result = title
 
         if self.tags:
             tag_string = "  ("                      # build tag string
@@ -917,7 +909,10 @@ class Cue():
                 if (i + 1) < len(self.tags):
                     tag_string += ', '
             tag_string += ')'
-            result += tag_string
+        else:
+            tag_string = ""
+            
+        result += tag_string
 
         if self.bits:
             result += '  ['
@@ -926,12 +921,9 @@ class Cue():
 
             result = result[:-2] + ']'
 
-        
+        result += " " * (49 - len(title) - len(tag_string)) + "o." + self.hash()
         
         return(result)
-
-        return(result)
-
 
 
     def __str__(self):
@@ -1179,11 +1171,13 @@ class Yota():
 
         tag_string += ')'
 
-        result = ""
+        #result = ""
         if self.title:
-            result = self.title + result
+            title = self.title
         else:
-            result = "myYota" + result
+            title = "MyYota"
+        
+        result = title
 
         if self.tags:
             tag_string = "  ("                      # build tag string
@@ -1192,7 +1186,10 @@ class Yota():
                 if (i + 1) < len(self.tags):
                     tag_string += ', '
             tag_string += ')'
-            result += tag_string
+        else:
+            tag_string = ""
+        
+        result += tag_string
 
         if self.bits:
             result += '  ['
@@ -1201,12 +1198,8 @@ class Yota():
 
             result = result[:-2] + ']'
 
-        result += "     " + "o." + self.hash()
-
+        result += " " * (49 - len(title) - len(tag_string)) + "o." + self.hash()
         
-        
-        return(result)
-
         return(result)
 
 
@@ -1251,31 +1244,40 @@ class Yota():
             self.omm = self.omm[:-1]
         
     
-    def to_sample(self, add=0, time_end_str=None, time_start_str=False):
+    # def to_sample(self, add=0, time_end_str=None, time_start_str=False):
     
-        yota_copy = copy.deepcopy(self)
+    #     yota_copy = copy.deepcopy(self)
         
-        if time_start_str:
-            start_time = time_start_str
-        else:
-            start_time = '1s'
+    #     if time_start_str:
+    #         start_time = time_start_str
+    #     else:
+    #         start_time = '1s'
 
-        if add:
-            new_omm = yota_copy.omm + '.' + start_time + '.' + str(time_start + add) + 's'   # NB: 0s bug to be fixed
-            new_sample = omm(new_omm)
-            return(new_sample)
+    #     if add:
+    #         new_omm = yota_copy.omm + '.' + start_time + '.' + str(time_start + add) + 's'   # NB: 0s bug to be fixed
+    #         new_sample = omm(new_omm)
+    #         return(new_sample)
 
-        elif time_end_str: 
-            new_omm = yota_copy.omm + '.' + start_time + '.' + time_end_str
-            new_sample = omm(new_omm)
-            return(new_sample)
+    #     elif time_end_str: 
+    #         new_omm = yota_copy.omm + '.' + start_time + '.' + time_end_str
+    #         new_sample = omm(new_omm)
+    #         return(new_sample)
 
 
-    def srt_search(self, keyword, clip_length=10):
+    def srt_search(self, keyword, clip_length=10, mixtape=True):
+        """Takes search term, YouTube hash, optional minimum clip length (for merging nearby results), 
+        returns list of result URLs"""
 
-        myMixtape = srt.srt_search(self, lib.Convert.omm, Mixtape, keyword, clip_length)
+        result = srt.main(keyword, self.youtube_hash, clip_length)
+        if mixtape:
+            if len(result) > 0:
+                myMix = Mixtape(lib.Convert.omm(result[0]))
+                for item in result[1:]:
+                    myMix += lib.Convert.omm(item)
 
-        return(myMixtape)
+                return myMix
+
+        return result
 
 
     def hash(self):

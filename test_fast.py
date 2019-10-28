@@ -71,6 +71,7 @@ class Testomm(unittest.TestCase):
     def test_sample_no_title(self):
         sample_test_str = omm_str = 'y.8ZtHhF9Lt_8.1s.podcast.intro.1m58s'
         result = lib.Convert.omm(sample_test_str)
+        self.assertEqual(result.__repr__()[:8], 'MySample')
         self.assertEqual(result.tags, ['podcast','intro'])
         self.assertEqual(result.time_start, 1)
         self.assertEqual(result.time_end, 118)
@@ -87,7 +88,7 @@ class Testomm(unittest.TestCase):
     def test_yota_no_title(self):
         cue_test_str = 'y.8ZtHhF9Lt_8.podcast.intro'
         result = lib.Convert.omm(cue_test_str)
-        self.assertEqual(result.__repr__(), 'myYota  (podcast, intro)     o.fd3faf525a1')
+        self.assertEqual(result.__repr__(), 'MyYota  (podcast, intro)                         o.fd3faf525a1')
         self.assertEqual(result.tags, ['podcast','intro'])
         self.assertEqual(result.youtube_hash, '8ZtHhF9Lt_8')
 
@@ -97,6 +98,7 @@ class Testomm(unittest.TestCase):
     def test_sample_no_title_or_tags(self):
         sample_test_str = 'y.8ZtHhF9Lt_8.1s.1m58s'
         result = lib.Convert.omm(sample_test_str)
+        self.assertEqual(result.__repr__(), 'MySample  1m57s                                  o.efed709609f')
         my_str_name = result.__str__()
         self.assertEqual(my_str_name[-5:], '1m58s')
         self.assertEqual(result.youtube_hash, '8ZtHhF9Lt_8')
@@ -105,7 +107,7 @@ class Testomm(unittest.TestCase):
         sample_test_str = 'y.8ZtHhF9Lt_8.1m58s'
         result = lib.Convert.omm(sample_test_str)
         my_str_name = result.__str__()
-        self.assertEqual(my_str_name, 'y.8ZtHhF9Lt_8.1m58s')
+        self.assertEqual(my_str_name[-5:], '1m58s')
         self.assertEqual(result.time_start, 118)
         self.assertEqual(result.youtube_hash, '8ZtHhF9Lt_8')
 
@@ -177,7 +179,7 @@ class Testomm(unittest.TestCase):
     # def test_youtube_url_parsing_0(self): 
     #     youtube_url_fourth_format = 'NI1L8ZJgA9o'
     #     yota_object = lib.Convert.omm(youtube_url_fourth_format)
-    #     self.assertEqual(yota_object.omm, 'y.NI1L8ZJgA9o.MyYota')
+    #     self.assertEqual(yota_object.omm, 'y.NI1L8ZJgA9o')
 
     # no time code, basic YouTube URL
     def test_youtube_url_parsing(self): 
@@ -209,7 +211,7 @@ class Testomm(unittest.TestCase):
     def test_mixtape_player(self):
         test_mix_object = lib.Convert.omm('y.drRQVI58c-E.1m18s.Koreans_on_Metoo.interview.asia.2m0s..y.drRQVI58c-E.1m18s.Koreans_on_Metoo.interview.asia.2m0s')
         obj_jule = test_mix_object.player()
-        test_jule = '<iframe width="360" height="216" src="https://www.youtube.com/embed/drRQVI58c-E?start=78&end=120&rel=0&autoplay=0&enablejsapi=1" frameborder=0 allowfullscreen></iframe> <iframe width="360" height="216" src="https://www.youtube.com/embed/drRQVI58c-E?start=78&end=120&rel=0&autoplay=0&enablejsapi=1" frameborder=0 allowfullscreen></iframe> <!DOCTYPE html>\n                                <html lang="en">\n                                <head>\n                                <meta charset="utf-8">\n                                <meta name="viewport" content="width=device-width, initial-scale=1">\n                                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">\n                                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>\n                                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>\n                                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>\n                                <title> YouTube Koreans on Met</title>\n                                </head>\n                                <body>\n\n                                <script src="https://www.youtube.com/iframe_api"></script><script>function onYouTubeIframeAPIReady() { window.yotasamples = {}; let i = 0;  for (let ifrm of document.getElementsByTagName("iframe")) {       ifrm.id = "sample" + i;      ifrm.yotaidx = i;      window.yotasamples[i] = new YT.Player(ifrm.id, {events: {"onStateChange": playerStateChange}});        i++;  }}  function playerStateChange(event) {    console.log(event.data);    switch(event.data) {        case 0:            let myidx = event.target.getIframe().yotaidx;            event.target.getIframe().classList.remove("current");if (window.yotasamples[myidx+1]) { window.yotasamples[myidx+1].getIframe().classList.add("current");window.yotasamples[myidx+1].playVideo();} else{window.yotasamples[0].getIframe().classList.add("current")}                        break    }  }document.querySelector("iframe").classList.add("current");</script><input type=button style="position:fixed;bottom:0;left:0" value="Toggle View" onclick="document.documentElement.classList.toggle(this.dataset.targetclass);" data-targetclass=julekalenderview><style>html:not(.julekalenderview) iframe:not(.current) {display:none} </style>\n\n                                </body>\n                                </html>\n\n'
+        test_jule = '<iframe width="360" height="216" title="Koreans on Metoo" src="https://www.youtube.com/embed/drRQVI58c-E?start=78&end=120&rel=0&autoplay=0&enablejsapi=1" frameborder=0 allowfullscreen></iframe> <iframe width="360" height="216" title="Koreans on Metoo" src="https://www.youtube.com/embed/drRQVI58c-E?start=78&end=120&rel=0&autoplay=0&enablejsapi=1" frameborder=0 allowfullscreen></iframe> <!DOCTYPE html>\n                                <html lang="en">\n                                <head>\n                                <meta charset="utf-8">\n                                <meta name="viewport" content="width=device-width, initial-scale=1">\n                                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">\n                                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>\n                                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>\n                                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>\n                                <title> YouTube Koreans on Met</title>\n                                </head>\n                                <body>\n\n                                <script src="https://www.youtube.com/iframe_api"></script><script>function onYouTubeIframeAPIReady() { window.yotasamples = {}; let i = 0;  for (let ifrm of document.getElementsByTagName("iframe")) {       ifrm.id = "sample" + i;      ifrm.yotaidx = i;      window.yotasamples[i] = new YT.Player(ifrm.id, {events: {"onStateChange": playerStateChange}});        i++;  }}  function playerStateChange(event) {    console.log(event.data);    switch(event.data) {        case 0:            let myidx = event.target.getIframe().yotaidx;            event.target.getIframe().classList.remove("current");if (window.yotasamples[myidx+1]) { window.yotasamples[myidx+1].getIframe().classList.add("current");window.yotasamples[myidx+1].playVideo();} else{window.yotasamples[0].getIframe().classList.add("current")}                        break    }  }document.querySelector("iframe").classList.add("current");</script><input type=button style="position:fixed;bottom:0;left:0" value="Toggle View" onclick="document.documentElement.classList.toggle(this.dataset.targetclass);" data-targetclass=julekalenderview><style>html:not(.julekalenderview) iframe:not(.current) {display:none} </style>\n\n                                </body>\n                                </html>\n\n'
         self.assertEqual(obj_jule[:1000], test_jule[:1000])
 
 
@@ -404,7 +406,7 @@ class Testomm(unittest.TestCase):
         self.assertEqual(len(new_object.content), 2)
 
     def test_sample_indexing(self):
-        yota_object = lib.Convert.omm('y.NI1L8ZJgA9o.10s.MySample.30s')
+        yota_object = lib.Convert.omm('y.NI1L8ZJgA9o.10s.30s')
         new_object = yota_object[10]
         self.assertEqual(new_object.time_start, 20)
 
@@ -434,16 +436,16 @@ class Testomm(unittest.TestCase):
 
 ## YOTA SRT SEARCH
 
-    # def test_srt_search(self):
-    #     url = 'https://www.youtube.com/watch?v=Utu0RNjf_h8'
-    #     myYota = lib.Convert.omm(url)
-    #     mentions = myYota.srt_search('kitchen')
-    #     self.assertEqual(len(mentions.content), 2)
+    def test_srt_search(self):
+        url = 'https://www.youtube.com/watch?v=Utu0RNjf_h8'
+        myYota = lib.Convert.omm(url)
+        mentions = myYota.srt_search('kitchen')
+        self.assertEqual(len(mentions), 2)
     # def test_srt_search_2(self):
     #     url = 'https://www.youtube.com/watch?v=Utu0RNjf_h8'
     #     myYota = lib.Convert.omm(url)
     #     mentions = myYota.srt_search('kitchen')
-    #     self.assertEqual(mentions[1].omm, 'y.Utu0RNjf_h8.6m23s.MyYota_keyword_kitchen_2.6m33s')
+    #     self.assertEqual(mentions[1].omm, 'y.Utu0RNjf_h8.6m23s_keyword_kitchen_2.6m33s')
 
 
 ## BIT OBJECT PARSING
@@ -476,15 +478,15 @@ class Testomm(unittest.TestCase):
     def test_sample_with_bits_repr(self):
 
         mySampleWithBits = lib.Convert.omm('y._QYngRrbsKo.My_YouTube_Clip.video.1m1s.1m10s.b.2TKY42w.Sec_Now.security.podcast.b.2TKY42w.Sec_Now.mp3.security.podcast.6m1s.7m25s.b.2TKY42w.Sec_Now.mp3.security.podcast.8m1s.9m25s')
-        self.assertEqual(mySampleWithBits.__repr__(), 'My YouTube Clip  (video)  9s  [Sec Now, Sec Now, Sec Now]')
+        self.assertEqual(mySampleWithBits.__repr__(), 'My YouTube Clip  (video)  9s  [Sec Now, Sec Now, Sec Now]                     o.c856d3a2076')
 
     def test_cue_with_bits_repr(self):
         myCueWithBits = lib.Convert.omm('y._QYngRrbsKo.My_YouTube_Clip.1m1s.b.2TKY42w.Sec_Now.security.podcast.b.2TKY42w.Sec_Now.mp3.security.podcast.6m1s.7m25s.b.2TKY42w.Sec_Now.mp3.security.podcast.8m1s.9m25s')
-        self.assertEqual(myCueWithBits.__repr__(), 'My YouTube Clip  [Sec Now, Sec Now, Sec Now]')
+        self.assertEqual(myCueWithBits.__repr__(), 'My YouTube Clip  [Sec Now, Sec Now, Sec Now]                                  o.f8babaddfe2')
 
     def test_yota_with_bits_second_bit_omm(self):
         myYotaWithBits = lib.Convert.omm('y._QYngRrbsKo.My_YouTube_Clip.b.2TKY42w.Sec_Now.security.podcast.b.2TKY42w.Sec_Now.mp3.security.podcast.6m1s.7m25s.b.2TKY42w.Sec_Now.mp3.security.podcast.8m1s.9m25s')
-        self.assertEqual(myYotaWithBits.__repr__(), 'My YouTube Clip  [Sec Now, Sec Now, Sec Now]     o.c2c219421b5')
+        self.assertEqual(myYotaWithBits.__repr__(), 'My YouTube Clip  [Sec Now, Sec Now, Sec Now]                                  o.c2c219421b5')
 
 
 ## BIT ONLY PARSING
@@ -578,12 +580,12 @@ class Testomm(unittest.TestCase):
     def test_yota_methods(self):
         myYotaStr = 'y.Ufr7O0qtX9U'
         myYota = lib.Convert.omm(myYotaStr)
-        self.assertEqual(myYota.methods(), ['hash','iframe','methods','play','srt_search','to_sample','update','vlc'])
+        self.assertEqual(myYota.methods(), ['hash','iframe','methods','play','srt_search','update','vlc'])
 
     def test_cue_methods(self):
         myCueStr = 'y.Ufr7O0qtX9U.1s'
         myCue = lib.Convert.omm(myCueStr)
-        self.assertEqual(myCue.methods(), ['hash','iframe','methods','play','srt_search','to_sample','update','vlc'])
+        self.assertEqual(myCue.methods(), ['hash','iframe','methods','play','srt_search','update','vlc'])
 
     def test_sample_methods(self):
         mySampleStr = 'y.Ufr7O0qtX9U.1s.10s'

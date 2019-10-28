@@ -102,7 +102,7 @@ Search YouTube directly and get results in **Mixtape** with `youtube('copenhagen
 
 Search auto-generated subtitles with `Yota.srt_search` and `Mixtape.srt_search`. (linux only) (beta)
 
-**Mixtape** files [supports](https://github.com/taext/mediabyte/blob/master/user_guide/Demo:%20Mixtape%20File%20Custom%20Formatting.ipynb) custom formatting. (freestyle formatting)
+**Mixtape** files [supports](https://github.com/taext/mediabyte/blob/master/user_guide/Demo:%20Mixtape%20Arbitrary%20White-Space.ipynb) arbitrary white-space. (freestyle formatting)
 
 Bitly links. (general link support)
 
