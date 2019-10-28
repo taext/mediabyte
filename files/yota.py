@@ -694,7 +694,8 @@ class Sample():
         if minutes:
             final_str += str(minutes) + 'm'
         if seconds:
-            final_str += str(rest) + 's'
+            if rest != 0:
+                final_str += str(rest) + 's'
 
         return(final_str)
     
@@ -952,7 +953,8 @@ class Cue():
         if minutes:
             final_str += str(minutes) + 'm'
         if seconds:
-            final_str += str(rest) + 's'
+            if rest != 0:
+                final_str += str(rest) + 's'
 
         return(final_str)
 
