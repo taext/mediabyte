@@ -8,6 +8,7 @@ import hashlib
 import string
 from . import cnf
 from . import yota
+from . import sh
 
 
 
@@ -481,3 +482,106 @@ class Mp3():
             if char in string.ascii_letters:
                 calculated_hash = temp_hash[i:i+11]
                 return(calculated_hash)
+
+
+
+
+class Stream:
+    """MediaByte Bit Stream object."""
+
+    def __init__(self, bitly_hash, tags=[], title=None, time_start=None, time_end=None):
+
+        self.bitly_hash = bitly_hash
+
+        if time_start:
+            self.time_start = time_start
+            if time_end:
+                self.time_end = time_end
+            else:
+                self.time_end = ""
+        else:
+            self.time_start = ""
+
+        if title:
+            self.title = title
+        else:
+            self.title = ""        
+
+        if tags:
+            self.tags = tags
+        else:
+            self.tags = []
+
+        
+        self.omm = "b." + self.bitly_hash
+        if self.title:
+            self.omm += "." + self.title
+        self.omm += ".m3u8"
+        if self.time_start:
+            self.omm += "." + str(self.time_start)
+        
+
+        if not 'm3u8' in tags:
+            raise ValueError ('Bit.Stream object needs to have the tag \'m3u8\'')
+
+        def parse_link():
+            url = "https://bitly.com/" + bitly_hash
+            r = requests.get(url)
+            new_url = r.url
+        
+            return(new_url)
+
+        self.link = parse_link()
+        
+        self.url = "https://bit.ly/" + self.bitly_hash
+
+        def hash():
+            m = hashlib.sha256()
+            m.update(self.omm.encode())
+            temp_hash = m.hexdigest()
+            for i, char in enumerate(temp_hash):
+                if char in string.ascii_letters:
+                    calculated_hash = temp_hash[i:i+11]
+                    return(calculated_hash)
+            
+        self.hash = hash()
+
+    def __repr__(self):
+        """Defines internal print() format (internal method)."""
+
+        if self.title == "":
+            title = 'MyStream'
+        else:
+            title = self.title
+
+        result = title
+
+
+        return result        
+
+
+    def __str__(self):
+        
+        return self.omm
+
+    def vlc(self):
+        if self.time_start:
+            time_str = '--start-time=' + str(self.time_start)
+            sh.ell('vlc', self.url, time_str)
+        else:
+            sh.ell('vlc', self.url)
+
+    def download_m3u8(self):
+        """Download .m3u8 in the browser"""
+        sh.ell('xdg-open',self.url)
+
+    
+    
+    # def hash(self):
+    #     m = hashlib.sha256()
+    #     m.update(self.omm.encode())
+    #     temp_hash = m.hexdigest()
+    #     for i, char in enumerate(temp_hash):
+    #         if char in string.ascii_letters:
+    #             calculated_hash = temp_hash[i:i+11]
+    #             return(calculated_hash)

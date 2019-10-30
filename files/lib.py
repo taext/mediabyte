@@ -22,8 +22,8 @@ class Convert():
 
 
     def search(search_term, exclusive_terms=[], mixtape=False):
-        """Search omm() parsing history,
-        return list of result strings, 
+        """Search omm() parsing history, exclusive_terms takes 
+        a list of regex strings to exclude, returns list of result strings, 
         optionally Mixtape."""
 
         # create a MediabyteHashObj (with current parsing history)
@@ -54,7 +54,10 @@ class Convert():
                         myMix = yota.Mixtape(Convert.omm(o[item]))
 
         if mixtape:
-            return myMix
+            try:
+                return myMix
+            except:
+                pass
         else:
             return result
 
@@ -308,9 +311,9 @@ class Convert():
         urls = yn.return_results(search_string)
         myMix = Convert.url_list_to_mixtape(urls)
 
-        for i, item in enumerate(myMix):
-            item.title = search_string.capitalize() + ' - ' + str(i+1)
-            item.update()
+        # for i, item in enumerate(myMix):
+        #     item.title = search_string.capitalize() + ' - ' + str(i+1)
+        #     item.update()
 
         if clip_length:
             first_sample = myMix[0].to_sample(add=clip_length)
@@ -331,6 +334,19 @@ class Convert():
                 new_sample = item.to_sample(time_end_str=time_end_str, time_start_str=time_start_str)
                 new_mix += new_sample
             myMix = new_mix
+
+        if isinstance(myMix, yota.Yota) or isinstance(myMix, yota.Cue) or isinstance(myMix, yota.Sample):
+            ono.add_to_hash_dict(myMix.omm)
+        if isinstance(myMix, yota.Mixtape):
+            if len(myMix) > 1:
+                # add the Mixtape itself to hash_dict
+                ono.add_to_hash_dict(myMix.omm_oneline())
+            # add first Mixtape item to hash_dict
+            ono.add_to_hash_dict(myMix[0].omm)
+            for item in myMix[1:]:
+                # add the following items to hash_dict
+                ono.add_to_hash_dict(item.omm)
+
 
         return myMix
 

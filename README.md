@@ -82,6 +82,9 @@ Check out the mediabyte [documentation](https://github.com/taext/mediabyte/blob/
 3. a **bit** can be a yota tag `y.youtubehash.b.bitlyhash` or stand alone
 2. a **bit.Mp3** - a **bit.Link** with the tag `mp3` - is a bitly MP3 link (MP3 support)
 3. a **bit.Mp3** has 0-2 time codes, yota-style handling and VLC playback
+4. a **Mixtape** of **bit.Mp3** (e.g. podcast clips) can be saved to local harddisk as
+    - individual **Sample** MP3 files or
+    - one combined **Mixtape** MP3 file
 
 
 
@@ -131,6 +134,8 @@ Online mediabyte and Mixtape link [player](http://www.mediabyte.xyz/).
 Online YouTube search to [player](http://www.mediabyte.xyz/search).
 
 Native `a.amazonhash` Amazon link support. (alpha)
+
+Stream .m3u8 link support `b.bitlyhash.m3u8`.
 
 <br>
 

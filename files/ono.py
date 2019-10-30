@@ -65,7 +65,7 @@ def add_to_hash_dict(mediabyte_str):
     # calculated_hash = m.hexdigest()[:11]
     
     # check for Mixtape object
-    mixtape_check = re.search('\.y\.', mediabyte_str)
+    #mixtape_check = re.search('\.y\.', mediabyte_str)
     
     #if not mixtape_check:
     hash_dict[calculated_hash] = mediabyte_str.replace(' ','_')

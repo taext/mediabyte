@@ -88,7 +88,7 @@ class Testomm(unittest.TestCase):
     def test_yota_no_title(self):
         cue_test_str = 'y.8ZtHhF9Lt_8.podcast.intro'
         result = lib.Convert.omm(cue_test_str)
-        self.assertEqual(result.__repr__(), 'MyYota  (podcast, intro)                         o.fd3faf525a1')
+        self.assertEqual(result.__repr__(), 'MyYota  (podcast, intro)                                     o.fd3faf525a1')
         self.assertEqual(result.tags, ['podcast','intro'])
         self.assertEqual(result.youtube_hash, '8ZtHhF9Lt_8')
 
@@ -98,7 +98,7 @@ class Testomm(unittest.TestCase):
     def test_sample_no_title_or_tags(self):
         sample_test_str = 'y.8ZtHhF9Lt_8.1s.1m58s'
         result = lib.Convert.omm(sample_test_str)
-        self.assertEqual(result.__repr__(), 'MySample  1m57s                                  o.efed709609f')
+        self.assertEqual(result.__repr__(), 'MySample  1m57s                                              o.efed709609f')
         my_str_name = result.__str__()
         self.assertEqual(my_str_name[-5:], '1m58s')
         self.assertEqual(result.youtube_hash, '8ZtHhF9Lt_8')
@@ -478,15 +478,15 @@ class Testomm(unittest.TestCase):
     def test_sample_with_bits_repr(self):
 
         mySampleWithBits = lib.Convert.omm('y._QYngRrbsKo.My_YouTube_Clip.video.1m1s.1m10s.b.2TKY42w.Sec_Now.security.podcast.b.2TKY42w.Sec_Now.mp3.security.podcast.6m1s.7m25s.b.2TKY42w.Sec_Now.mp3.security.podcast.8m1s.9m25s')
-        self.assertEqual(mySampleWithBits.__repr__(), 'My YouTube Clip  (video)  9s  [Sec Now, Sec Now, Sec Now]                     o.c856d3a2076')
+        self.assertEqual(mySampleWithBits.__repr__(), 'My YouTube Clip  (video)  9s  [Sec Now, Sec Now, Sec Now]                                 o.c856d3a2076')
 
     def test_cue_with_bits_repr(self):
         myCueWithBits = lib.Convert.omm('y._QYngRrbsKo.My_YouTube_Clip.1m1s.b.2TKY42w.Sec_Now.security.podcast.b.2TKY42w.Sec_Now.mp3.security.podcast.6m1s.7m25s.b.2TKY42w.Sec_Now.mp3.security.podcast.8m1s.9m25s')
-        self.assertEqual(myCueWithBits.__repr__(), 'My YouTube Clip  [Sec Now, Sec Now, Sec Now]                                  o.f8babaddfe2')
+        self.assertEqual(myCueWithBits.__repr__(), 'My YouTube Clip  [Sec Now, Sec Now, Sec Now]                                              o.f8babaddfe2')
 
     def test_yota_with_bits_second_bit_omm(self):
         myYotaWithBits = lib.Convert.omm('y._QYngRrbsKo.My_YouTube_Clip.b.2TKY42w.Sec_Now.security.podcast.b.2TKY42w.Sec_Now.mp3.security.podcast.6m1s.7m25s.b.2TKY42w.Sec_Now.mp3.security.podcast.8m1s.9m25s')
-        self.assertEqual(myYotaWithBits.__repr__(), 'My YouTube Clip  [Sec Now, Sec Now, Sec Now]                                  o.c2c219421b5')
+        self.assertEqual(myYotaWithBits.__repr__(), 'My YouTube Clip  [Sec Now, Sec Now, Sec Now]                                              o.c2c219421b5')
 
 
 ## BIT ONLY PARSING
@@ -596,7 +596,7 @@ class Testomm(unittest.TestCase):
         myCueStr = 'y.Ufr7O0qtX9U.1s.10s..y.Ufr7O0qtX9U.1s.10s'
         myCue = lib.Convert.omm(myCueStr)
         #print(myCue.methods()[:5])
-        self.assertEqual(myCue.methods()[:5], ['add_tags', 'append', 'content', 'find', 'hash'])
+        self.assertEqual(myCue.methods()[:5], ['add_tags', 'append', 'browser_player', 'content', 'find'])
 
     def test_bit_methods(self):
         myBitStr = 'b.sn-704.MyBit'

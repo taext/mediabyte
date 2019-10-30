@@ -26,7 +26,7 @@ def combine(time_list, min_clip_length):
 
 def get_filename(yt_hash):
     """Takes YouTube hash, returns subtitle file name match"""
-    files = os.listdir('/home/dd/anaconda3/lib/python3.7/site-packages/mediabyte/srt/')
+    files = os.listdir(cnf.srt_folder_path)
     filename = ""
     for filename_str in files:
         if yt_hash in filename_str:
@@ -81,15 +81,16 @@ def build_youtube_url(yt_hash, time_code):
     full_url = url + "?t=" + str(time_in_seconds(time_code))
     return full_url
 
-def main(search_term, yt_hash, min_clip_length=10):
+def main(search_term, yt_hash, min_interval=10):
     """Takes search term and YouTube hash, returns list of time codes of occurrences"""
 
     filename = get_filename(yt_hash)
-    with open(filename, 'r') as f:
-        content = f.readlines()
-    result = parse_subtitles(search_term, content, min_clip_length)
-    yt_urls = []
-    for item in result:
-        yt_urls.append(build_youtube_url(yt_hash, item))
+    if filename:
+        with open(filename, 'r') as f:
+            content = f.readlines()
+        result = parse_subtitles(search_term, content, min_interval)
+        yt_urls = []
+        for item in result:
+            yt_urls.append(build_youtube_url(yt_hash, item))
 
-    return yt_urls
+        return yt_urls

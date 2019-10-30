@@ -33,7 +33,7 @@ def dl_srt(youtube_url):
     os.chdir(cnf.srt_folder_path)
 
     if cnf.platform == 'linux':
-        shell_str = 'youtube-dl "' + youtube_url + '" --skip-download --write-auto-sub 1> /dev/null'
+        shell_str = 'youtube-dl "' + youtube_url + '" --skip-download --write-auto-sub 1> /dev/null 2> /dev/null'
     else:
         shell_str = 'youtube-dl "' + youtube_url + '" --skip-download --write-auto-sub'
     #print('shell_str:', shell_str)

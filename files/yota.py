@@ -7,6 +7,8 @@ from . import search_srt as srt
 from . import omm_file_parser, sh
 from . import lib
 import string
+import time
+import os
 
 
 
@@ -146,15 +148,15 @@ class Mixtape():
 
     def __repr__(self):
 
-        yotas_string = "mediabyte.Mixtape" + " " * 35 + "o." + self.hash() + "\n"
-        yotas_string += "-" * 65 + "\n"
+        yotas_string = "mediabyte.Mixtape" + " " * 44 + "o." + self.hash() + "\n"
+        yotas_string += "-" * 74 + "\n"
         for i, sample in enumerate(self.content):
             if sample.title:
                 title = sample.title
             else:
                 type_result = str(type(sample)).split(".")[-1][:-2]
                 title = "My" + type_result
-            yotas_string += str(i) + ". " + title + " " * (50 - (len(title) + len(str(i)))) + "o." + sample.hash() + "\n"
+            yotas_string += str(i) + ". " + title + " " * (60 - (len(title) + len(str(i))) - 1) + "o." + sample.hash() + "\n"
 
         return(str(yotas_string))
 
@@ -320,6 +322,15 @@ class Mixtape():
 
         return(iframe_collection_str)
 
+    
+    def browser_player(self, width=600):
+        """Open Mixtape player in browser"""
+
+        self.write_player_html('mediabyte_temp.htm', width=width)
+        sh.ell('xdg-open','mediabyte_temp.htm')
+        time.sleep(5)
+        os.remove('mediabyte_temp.htm')
+
 
     def omm(self):
         """Returns omm format string."""
@@ -371,27 +382,46 @@ class Mixtape():
             raise ValueError('only supported for Yota-only Mixtapes')
 
 
-    def srt_search(self, search_term, clip_length=10):
+    def srt_search(self, keyword, min_interval=10):
+        i = 0
+        myMix = None
+        while not myMix:
+            myMix = self[i].srt_search(keyword, min_interval=10)
+            if i + 1 == len(self):
+                return myMix
+            else:
+                i += 1
+            
+        if self[i:]:
+            for item in self[i:]:
+                result = item.srt_search(keyword, min_interval=10)
+                if result is not None:
+                    for item2 in result:
+                        myMix += item2
+            return myMix
 
-        result_list = []
-        myMixtape = None
-        for item in self:
-            result = item.srt_search(search_term, clip_length=clip_length)
-            if isinstance(result, Mixtape):
-                for item in result:
-                    result_list.append(item)
-            elif isinstance(result, Sample):
-                result_list.append(item)
-            elif isinstance(result, Cue) and clip_length:
-                print('Error, got Cue object while clip_length:', clip_length)
-            elif isinstance(result, Cue):
-                result_list.append(item)
-        if result_list:
-            myMixtape = Mixtape(result_list[0])
-            for item in result_list[1:]:
-                myMixtape += item
+
+    # def srt_search(self, search_term, clip_length=10):
+
+    #     result_list = []
+    #     myMixtape = None
+    #     for item in self:
+    #         result = item.srt_search(search_term, clip_length=clip_length)
+    #         if isinstance(result, Mixtape):
+    #             for item in result:
+    #                 result_list.append(item)
+    #         elif isinstance(result, Sample):
+    #             result_list.append(item)
+    #         elif isinstance(result, Cue) and clip_length:
+    #             print('Error, got Cue object while clip_length:', clip_length)
+    #         elif isinstance(result, Cue):
+    #             result_list.append(item)
+    #     if result_list:
+    #         myMixtape = Mixtape(result_list[0])
+    #         for item in result_list[1:]:
+    #             myMixtape += item
                 
-        return(myMixtape)
+    #     return(myMixtape)
 
 
     def write_omm(self, filename):
@@ -565,8 +595,16 @@ class Sample():
                 result += item.title + ', '
         
             result = result[:-2] + ']'
+        
+        my_length = 60
 
-        result += " " * (47 - len(title) - len(tag_string) - len(self.time())) + "o." + self.hash()
+        if (my_length - len(title) - len(tag_string) - len(self.time()) + 3) < 0:
+            title_length = 60 - len(title) - len(tag_string) - len(self.time()) - 6
+            new_title = title[:title_length] + "..."
+            result = result.replace(title, new_title)
+
+
+        result += " " * (60 - len(title) - len(tag_string) - len(self.time()) - 3) + "  o." + self.hash()
         
         return(result)
 
@@ -930,7 +968,15 @@ class Cue():
 
             result = result[:-2] + ']'
 
-        result += " " * (49 - len(title) - len(tag_string)) + "o." + self.hash()
+        my_length = 60
+
+        if (my_length - len(title) - len(tag_string) + 2) < 0:
+            title_length = 60 - len(title) - len(tag_string) - 3
+            new_title = title[:title_length] + "..."
+            result = result.replace(title, new_title)
+
+
+        result += " " * (60 - len(title) - len(tag_string)) + " o." + self.hash()
         
         return(result)
 
@@ -1208,7 +1254,15 @@ class Yota():
 
             result = result[:-2] + ']'
 
-        result += " " * (49 - len(title) - len(tag_string)) + "o." + self.hash()
+        my_length = 60
+
+        if (my_length - len(title) - len(tag_string) + 2) < 0:
+            title_length = 60 - len(title) - len(tag_string) - 3
+            new_title = title[:title_length] + "..."
+            result = result.replace(title, new_title)
+
+
+        result += " " * (my_length - len(title) - len(tag_string)) + " o." + self.hash()
         
         return(result)
 
@@ -1274,17 +1328,42 @@ class Yota():
     #         return(new_sample)
 
 
-    def srt_search(self, keyword, clip_length=10, mixtape=True):
-        """Takes search term, YouTube hash, optional minimum clip length (for merging nearby results), 
-        returns list of result URLs"""
+    def srt_search(self, keyword, sample_length=7, min_interval=10, mixtape=True):
+        """Takes search term, optional sample length and minimum clip length (for merging nearby results), 
+        returns Mixtape of results (optionally list of urls), set sample_length=0 to get Cue results."""
 
-        result = srt.main(keyword, self.youtube_hash, clip_length)
+
+        def cue_str_to_sample(cue_str, sample_length):
+            myCue = lib.Convert.omm(cue_str)
+            time_in_question = myCue.time_start
+            end_time = time_in_question + sample_length
+            end_time_yt_format = myCue.youtube_time_format(end_time)
+            mySampleStr = myCue.omm + "." + end_time_yt_format
+            mySample = lib.Convert.omm(mySampleStr)
+            return mySample
+
+        result = srt.main(keyword, self.youtube_hash, min_interval = min_interval)
         if mixtape:
-            if len(result) > 0:
-                myMix = Mixtape(lib.Convert.omm(result[0]))
-                for item in result[1:]:
-                    myMix += lib.Convert.omm(item)
+            if result:
+                if sample_length == False:
+                    myCue = lib.Convert.omm(result[0])
+                    myMix = Mixtape(myCue)
+                else:
+                    mySample = cue_str_to_sample(result[0], sample_length)
+                    myMix = Mixtape(mySample)
 
+                # if sample_length == False:
+                #     myMix = Mixtape(lib.Convert.omm(result[0]))
+                # else:
+
+                for item in result[1:]:
+                    if sample_length == False:
+                        myMix += lib.Convert.omm(item)
+                    else:
+                        mySample = cue_str_to_sample(item, sample_length)
+                        myMix += mySample
+                # add Mixtape to hash_dict
+                lib.Convert.omm(myMix.omm_oneline())
                 return myMix
 
         return result

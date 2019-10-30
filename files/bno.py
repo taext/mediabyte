@@ -125,6 +125,11 @@ def build_bit_object(result_list):
     else:
         title = result_list[1][0]
 
+    # Stream object detected
+    if 'm3u8' in tags_list:
+        myStream = bit.Stream(bitly_hash=bitly_hash, title=title, tags=tags_list)
+        return myStream
+
     # Sample detected (two time codes)
     if len(times_list) == 2 and 'mp3' in tags_list:
 
