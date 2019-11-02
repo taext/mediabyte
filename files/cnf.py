@@ -24,7 +24,7 @@ def get_os_file_separator():
 
 # hard-coded canonical package version number
 
-version_number = 'v0.8.8.9'
+version_number = 'v0.8.9.0'
 
 
 # constants for use in modules

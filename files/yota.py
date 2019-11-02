@@ -1,7 +1,7 @@
 import re
 import copy
 import hashlib
-from . import bno, yno
+from . import bno, yno, ono
 from . import bit
 from . import search_srt as srt
 from . import omm_file_parser, sh
@@ -34,10 +34,16 @@ def iframe(self, width=360, pause=False, title=False, center=True):
 
 def build_html(self):
 
-    if self.tags:
-        html_str = '<a href="' + str(self.url) + '" title="' + " ".join(self.tags) +  '">' + str(self.title) + '</a>'
+    if self.title:
+        title = self.title
     else:
-        html_str = '<a href="' + str(self.url) + '">' + str(self.title) + '</a>'
+        my_type = lib.Convert._determine_type(self.omm)
+        title = "My" + my_type
+
+    if self.tags:
+        html_str = '<a href="' + str(self.url) + '" title="' + " ".join(self.tags) +  '">' + title + '</a>'
+    else:
+        html_str = '<a href="' + str(self.url) + '">' + title + '</a>'
 
     try: 
         for item in self.bits:        
@@ -175,7 +181,7 @@ class Mixtape():
         if title_string_input:
             title_string_2 = "<h2>" + title_string_input + "</h2> <br> "
         else:
-            title_string_2 = "<h2>" + "Mediabyte Mixtape" + "</h2> <br> "
+            title_string_2 = "<h2>" + "mediabyte.Mixtape" + "</h2> <br> "
 
         html_string = title_string_2
 
@@ -382,11 +388,11 @@ class Mixtape():
             raise ValueError('only supported for Yota-only Mixtapes')
 
 
-    def srt_search(self, keyword, min_interval=10):
+    def srt_search(self, keyword, min_interval=10, sample_length=7):
         i = 0
         myMix = None
         while not myMix:
-            myMix = self[i].srt_search(keyword, min_interval=10)
+            myMix = self[i].srt_search(keyword, min_interval=10, sample_length=sample_length)
             if i + 1 == len(self):
                 return myMix
             else:
@@ -394,7 +400,7 @@ class Mixtape():
             
         if self[i:]:
             for item in self[i:]:
-                result = item.srt_search(keyword, min_interval=10)
+                result = item.srt_search(keyword, min_interval=10, sample_length=sample_length)
                 if result is not None:
                     for item2 in result:
                         myMix += item2
@@ -489,8 +495,6 @@ class Sample():
             self.url = 'https://www.youtube.com/embed/' + self.youtube_hash + '?start=' + str(self.time_start) + '&end=' + str(self.time_end) + '&rel=0' + '&autoplay=1'
 
 
-            self.html = build_html(self)
-
             # omm formatting
             self.omm = 'y.' + self.youtube_hash
             self.omm += '.' + self.youtube_time_format(self.time_start)
@@ -511,6 +515,8 @@ class Sample():
             else:
                 self.bits = []
 
+
+            self.html = build_html(self)
 
             # add bits to Sample.html()
             try: 
@@ -846,19 +852,6 @@ class Cue():
             self.title = None
 
 
-        self.html = build_html(self)
-        #self.html = '<a href="' + str(self.url) + '" title="' + " ".join(tags) +  '">' + str(self.title) + '</a>'
-
-
-        # if tags:
-        #     link_tags_read = []
-        #     for item in self.tags:
-        #         m = re._search('http', item)
-        #         if m:
-        #             link_tags_read.append(item)
-
-        #     self.links = link_tags_read
-
 
         # omm formatting
         self.omm = 'y.' + self.youtube_hash
@@ -872,6 +865,7 @@ class Cue():
             if self.omm[-1] == '.':
                 self.omm = self.omm[:-1]
 
+        self.html = build_html(self)
 
         if bits:
             #print('bits:', str(bits))
@@ -1347,18 +1341,18 @@ class Yota():
             if result:
                 if sample_length == False:
                     myCue = lib.Convert.omm(result[0])
+                    ono.add_to_hash_dict(myCue.omm)
                     myMix = Mixtape(myCue)
                 else:
                     mySample = cue_str_to_sample(result[0], sample_length)
                     myMix = Mixtape(mySample)
 
-                # if sample_length == False:
-                #     myMix = Mixtape(lib.Convert.omm(result[0]))
-                # else:
-
                 for item in result[1:]:
                     if sample_length == False:
-                        myMix += lib.Convert.omm(item)
+                        myCue = lib.Convert.omm(item)
+                        # add to hash_dict
+                        ono.add_to_hash_dict(myCue.omm)
+                        myMix += myCue
                     else:
                         mySample = cue_str_to_sample(item, sample_length)
                         myMix += mySample
@@ -1404,4 +1398,3 @@ class Drip():
     def __repr__(self):
         return self.omm
     
-        
