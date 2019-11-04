@@ -21,7 +21,10 @@ def iframe(self, width=360, pause=False, title=False, center=True):
         height = int(width * 0.6)
         url = url.replace('216', str(height))
     newUrl = url.replace('XXXXX', self.url)
-    newUrl = newUrl.replace('YYYYY', self.title)
+    if title:
+        newUrl = newUrl.replace('YYYYY', title)
+    else:
+        newUrl = newUrl.replace('title="YYYYY"','')
     if pause:
         newUrl = newUrl.replace('autoplay=1','autoplay=0')
     if title:

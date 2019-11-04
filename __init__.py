@@ -10,7 +10,8 @@ from .files.onoObject import MediabyteHashObj
 omm = Convert.omm
 youtube = Convert.search_to_mixtape
 search = Convert.search
-history = Convert.search("")
+history = Convert._search_history("")
+#regex = Convert.regex_search
 
 input = Convert.omm
 version = Convert.version()

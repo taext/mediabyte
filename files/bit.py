@@ -210,7 +210,10 @@ class Link():
             url = url.replace('360', str(width))
 
         newUrl = url.replace('XXXXX', self.link)
-        newUrl = newUrl.replace('YYYYY', self.title)
+        if title:
+            newUrl = newUrl.replace('YYYYY', self.title)
+        else:
+            newUrl = newUrl.replace('title="YYYYY"','')
         if pause:
             newUrl = newUrl.replace('autoplay=1', 'autoplay=0')
         if title:

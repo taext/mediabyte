@@ -24,7 +24,7 @@ def get_os_file_separator():
 
 # hard-coded canonical package version number
 
-version_number = 'v0.8.9.0'
+version_number = 'v0.8.9.4'
 
 
 # constants for use in modules
@@ -35,6 +35,7 @@ os_sep = get_os_file_separator()
 package_path = get_site_packages_path()
 srt_folder_path = package_path + os_sep + 'srt'
 hash_dict_path = package_path + os_sep + 'files' + os_sep + 'hash_dict.json'
+filters_path = package_path + os_sep + 'files' + os_sep + 'filters.json'
 
 
 

@@ -11,6 +11,7 @@ from . import onoObject
 
 class Convert():
 
+
     def readme():
         """Returns README.md Markdown file content."""
 
@@ -21,7 +22,7 @@ class Convert():
             return file_content
 
 
-    def search(search_term, exclusive_terms=[], mixtape=False):
+    def _search_history(search_term, exclusive_terms=[], mixtape=False):
         """Search omm() parsing history, exclusive_terms takes 
         a list of regex strings to exclude, returns list of result strings, 
         optionally Mixtape."""
@@ -355,7 +356,7 @@ class Convert():
         """Takes yn format YouTube string and filename,
         writes Mixtape player HTML file."""
 
-        mix_obj = Convert.search_to_mixtape(search_string, clip_length, time_end_str=time_end_str)
+        mix_obj = Convert._search_history_to_mixtape(search_string, clip_length, time_end_str=time_end_str)
 
         mix_obj.write_player_html(filename)
 
@@ -601,3 +602,48 @@ class Convert():
         else:
             raise ValueError("input doesn't compute")
 
+
+
+    def search(search_term, save_filter_as=""):
+        """Search history, regex enabled, save filter with save_filter_as"""
+
+        def check_filters_dict(filter_name):
+            """Check for saved filter"""
+
+            with open(cnf.filters_path, 'r') as f:
+                filters = json.load(f)
+            if search_term in filters:
+                return filters[search_term]
+
+        history = Convert._search_history("")
+        result = []
+
+        filter_check = check_filters_dict(search_term)
+        if filter_check:
+            search_term = filter_check
+
+
+        for item in list(set(history)):
+            # ignore out old-style Mixtapes
+            if '.y.' not in item:
+                # ignore y.youtubehash only items
+                if not (len(item.split(".")) < 3 and item[:2] == "y."):  # NB: Hacky, needs to be thought through
+                    m = re.search(search_term, item)
+                    if m:
+                        result.append(item)
+        if len(result) > 0:
+            myMix = yota.Mixtape(Convert.omm(result[0]))
+        for item in result[1:]:
+            myMix += Convert.omm(item)
+
+        if save_filter_as:
+            with open(cnf.filters_path, 'r') as f:
+                filters = json.load(f)
+            if save_filter_as not in filters:
+                filters[save_filter_as] = search_term
+                with open(foldername, 'w') as f:
+                    json.dump(filters, f)
+            
+
+        if len(result) > 0:
+            return myMix

@@ -219,17 +219,20 @@ class Testomm(unittest.TestCase):
 
     def test_cue_iframe(self):
         test_cue_object = lib.Convert.omm('y.gCLoXNL-AAI.1s.Rocket Beans Live')  # live stream, does it matter?
-        test_iframe = '<center><iframe width="360" height="216" title="Rocket Beans Live" src="https://www.youtube.com/embed/gCLoXNL-AAI?start=1&rel=0&autoplay=1" frameborder=0 allowfullscreen></iframe></center>'
+        test_iframe = '<center><iframe width="360" height="216"  src="https://www.youtube.com/embed/gCLoXNL-AAI?start=1&rel=0&autoplay=1" frameborder=0 allowfullscreen></iframe></center>'
+
         self.assertEqual(test_cue_object.iframe(), test_iframe)
 
     def test_yota_iframe(self):
         test_cue_object = lib.Convert.omm('y.gCLoXNL-AAI.Rocket Beans Live')  # live stream, does it matter?
-        test_iframe = '<center><iframe width="360" height="216" title="Rocket Beans Live" src="https://www.youtube.com/embed/gCLoXNL-AAI?start=0&rel=0&autoplay=1" frameborder=0 allowfullscreen></iframe></center>'
+        test_iframe = '<center><iframe width="360" height="216"  src="https://www.youtube.com/embed/gCLoXNL-AAI?start=0&rel=0&autoplay=1" frameborder=0 allowfullscreen></iframe></center>'
+
         self.assertEqual(test_cue_object.iframe(), test_iframe)
 
     def test_sample_iframe(self):
         test_cue_object = lib.Convert.omm('y.drRQVI58c-E.1s.Rocket Beans Live.4s')  # live stream, does it matter?
-        test_iframe = '<center><iframe width="360" height="216" title="Rocket Beans Live" src="https://www.youtube.com/embed/drRQVI58c-E?start=1&end=4&rel=0&autoplay=1" frameborder=0 allowfullscreen></iframe></center>'
+        test_iframe = '<center><iframe width="360" height="216"  src="https://www.youtube.com/embed/drRQVI58c-E?start=1&end=4&rel=0&autoplay=1" frameborder=0 allowfullscreen></iframe></center>'
+
         self.assertEqual(test_cue_object.iframe(), test_iframe)
 
 

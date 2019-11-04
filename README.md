@@ -45,7 +45,7 @@ The mediabyte format is
 
 ![OMM syntax highlight example](https://v1d.dk/omm/omm_syntax_highlight.jpg)
 
-[link to](https://v1d.dk/omm/mixtape24.omm) the Mixtape file above (Mixtape links can be parsed by the system, copy the link and [try it](http://www.mediabyte.xyz/) yourself)
+[link to](https://v1d.dk/omm/mixtape24.omm) the Mixtape file above (Mixtape links can be parsed by the system, copy the link and [try it](http://skillporn.tv/) yourself)
 
 <br>
 
@@ -103,7 +103,7 @@ Syntax highlighting and `.omm` file association using the contained Atom [packag
 
 Search YouTube directly and get results in **Mixtape** with `youtube('copenhagen 10')`.
 
-Search auto-generated subtitles with `Yota.srt_search` and `Mixtape.srt_search`. (linux only) (beta)
+Keyword search using YouTube auto-generated subtitles with `Yota.srt_search` and `Mixtape.srt_search`.
 
 **Mixtape** files [supports](https://github.com/taext/mediabyte/blob/master/user_guide/Demo:%20Mixtape%20Arbitrary%20White-Space.ipynb) arbitrary white-space. (freestyle formatting)
 
@@ -129,13 +129,15 @@ Convert manually saved YouTube .htm file to **Mixtape**.
 
 Convert YouTube Takeout watch history file to **Mixtape**.
 
-Online mediabyte and Mixtape link [player](http://www.mediabyte.xyz/).
+Online mediabyte and Mixtape link [player](http://skillporn.tv/).
 
-Online YouTube search to [player](http://www.mediabyte.xyz/search).
+Online YouTube search to [player](http://skillporn.tv/search).
 
 Native `a.amazonhash` Amazon link support. (alpha)
 
 Stream .m3u8 link support `b.bitlyhash.m3u8`.
+
+Local history search with regex and save filter option.
 
 <br>
 
@@ -160,4 +162,4 @@ Currently the output options are:
 <br>
 
 
-                                        Updated Sep 7th 2019
+                                        Updated Nov 4th 2019
