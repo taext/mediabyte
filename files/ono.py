@@ -1,5 +1,5 @@
 #!/home/dd/anaconda3/bin/python
-import os, re, json, hashlib, string
+import os, re, json, hashlib, string, requests
 from . import lib
 from . import cnf
 
@@ -99,6 +99,13 @@ def check_ono(ono_str, string_arg=False):
         return "Multiple matches, please add characters and try again"
     elif len(results) == 1:
         return results[0]
+    elif len(results) == 0:
+        if cnf.flask_server == False:
+            url_get = "http://skillporn.tv/check/" + ono_str[2:]
+            r = requests.get(url_get)
+            if r:
+                return lib.Convert.omm(r.text)
+
 
 
 hash_dict = load_hash_dict()

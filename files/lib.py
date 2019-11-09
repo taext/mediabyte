@@ -11,6 +11,21 @@ from . import onoObject
 
 class Convert():
 
+    def hash_space(length):
+        """Calculate the hash space for a given length o.mediabytehash"""
+        
+        count = 26 + (36 ** (length - 1))
+        return count
+
+
+    def tutorial(dark=True):
+        """Open tutorial Mixtape in browser"""
+
+        if dark == True:
+            sh.ell("xdg-open","http://v1d.dk/omm/mixtape_tutorial.png")
+        else:
+            sh.ell("xdg-open","http://v1d.dk/omm/mixtape_tutorial_light.png")
+            
 
     def readme():
         """Returns README.md Markdown file content."""
@@ -81,7 +96,7 @@ class Convert():
         
         def test_for_tag(tag, omm_str):
             """Test for tag in omm string"""
-            m = re.search('[\.^]' + tag + '(\.|$)', omm_str)
+            m = re.search(r'[\.^]' + tag + r'(\.|$)', omm_str)
             if m: return(True)
             else: return(False)
         
@@ -103,9 +118,9 @@ class Convert():
         
         with open(youtube_takeout_html_filename,'r') as f:
             file_content = f.read()
-        m = re.findall('videoId\":"(\S{11})\"', file_content)
-        non_results = list(unique_everseen(m))
-        m2 = re.findall('v=([a-zA-Z0-9\_\-]{11})', file_content)
+        #m = re.findall(r'videoId\":"(\S{11})\"', file_content)
+        #non_results = list(unique_everseen(m))
+        m2 = re.findall(r'v=([a-zA-Z0-9\_\-]{11})', file_content)
         results2 = list(unique_everseen(m2))
         
         with open(omm_filename,'w') as f:
@@ -120,15 +135,15 @@ class Convert():
         
         with open(youtube_html_filename,'r') as f:
             file_content = f.read()
-        m = re.findall('videoId\":"(\S{11})\"', file_content)
-        non_results = list(unique_everseen(m))
-        m2 = re.findall('v=([a-zA-Z0-9\_\-]{11})', file_content)
+        #m = re.findall(r'videoId\":"(\S{11})\"', file_content)
+        #non_results = list(unique_everseen(m))
+        m2 = re.findall(r'v=([a-zA-Z0-9\_\-]{11})', file_content)
         results2 = list(unique_everseen(m2))
         
         with open(omm_filename,'w') as f:
             for item in results2[21:]:
                 # # NB: Hacky, filtering y.y results (because of faulty .y. mixtape splitting)
-                # m = re.search('^y', item)
+                # m = re.search(r'^y', item)
                 # if not m:
                 f.write('y.' + item)
                 f.write('\n')
@@ -142,9 +157,9 @@ class Convert():
     def _time_str(time_str):
         """Takes '2h5m3s' format time string, returns value in seconds (internal method)."""
 
-        m = re.search('([0-9]+)s', time_str)   # match seconds
-        m2 = re.search('([0-9]+)m', time_str)  # match minutes
-        m3 = re.search('([0-9]+)h', time_str)  # match hours
+        m = re.search(r'([0-9]+)s', time_str)   # match seconds
+        m2 = re.search(r'([0-9]+)m', time_str)  # match minutes
+        m3 = re.search(r'([0-9]+)h', time_str)  # match hours
 
         if m:
             seconds = m.group(1)
@@ -173,8 +188,8 @@ class Convert():
     #     for line in lines:
 
     #         if len(line) > 5:
-    #             m = re.search('^\s*#', line)    # check for comment line to be excluded
-    #             m2 = re.search('\"\"\"', line)  # check for docstrings to be excluded
+    #             m = re.search(r'^\s*#', line)    # check for comment line to be excluded
+    #             m2 = re.search(r'\"\"\"', line)  # check for docstrings to be excluded
     #             if m or m2:
     #                 pass
     #             else:
@@ -218,7 +233,7 @@ class Convert():
     #     file_lines = str(pkg_resources.resource_string(resource_package, resource_path)).split("\n")
     
     #     for item in file_lines[:100]:
-    #         m = re.search('Whats New: (.*?)\\n', item)
+    #         m = re.search(r'Whats New: (.*?)\\n', item)
     #         if m:
     #             return m.group(1)
 
@@ -228,7 +243,7 @@ class Convert():
 
         res = yno.main(item)
         time_code_list = res[0] # get time code occurrences
-        m = re.findall('\.\.', item) # test for Mixtape
+        m = re.findall(r'\.\.', item) # test for Mixtape
         if m: 
             if len(m) >= 1:  # '..' match means Mixtape
                 answer = 'Mixtape'
@@ -241,7 +256,7 @@ class Convert():
             answer = 'Yota'
         else:
             raise ValueError('unknown format')
-            answer = None
+
         return(answer)
 
 
@@ -388,7 +403,7 @@ class Convert():
             """Takes yno string, returns yota object: Sample, Cue, Yota or Mixtape."""
             
             # test for bit
-            m = re.search('^b\.', in_obj)
+            m = re.search(r'^b\.', in_obj)
             if m:
                 myBit = bno.main(in_obj)
                 return(myBit)
@@ -436,9 +451,9 @@ class Convert():
 
             res = yno.main(item)
             time_code_list = res[0] # get time code occurrences
-            m = re.findall('\.\.', item) # test for Mixtape
-            m2 = re.search('^b\.', item)  # test for Bit.Link
-            m3 = re.search('\.mp3\W', item) # test for Bit.Mp3
+            m = re.findall(r'\.\.', item) # test for Mixtape
+            m2 = re.search(r'^b\.', item)  # test for Bit.Link
+            m3 = re.search(r'\.mp3\W', item) # test for Bit.Mp3
             # Bit matched
             if m2 and not m3:
                 answer = 'bit.Link'
@@ -456,7 +471,7 @@ class Convert():
                 answer = 'Yota'
             else:
                 raise ValueError('unknown format')
-                answer = None
+
             return(answer)
 
 
@@ -466,14 +481,14 @@ class Convert():
             
             # NB: Hacky, correct for updated share link format
             # https://youtu.be/UW_oi30h4vU?t=480 (no hms)
-            m = re.search('youtu.be', url)
-            m2 = re.search('t=\d+$', url)
+            m = re.search(r'youtu.be', url)
+            m2 = re.search(r't=\d+$', url)
             if m and m2:
                 url += 's'
 
-            m3 = re.search('time_continue=(\d+)', url)
+            m3 = re.search(r'time_continue=(\d+)', url)
             if m3:
-                m4 = re.search('v=([a-zA-Z0-9\_\-]{11})', url)
+                m4 = re.search(r'v=([a-zA-Z0-9\_\-]{11})', url)
                 new_str = 'y.' + str(m4.group(1)) + '.' + m3.group(1) + 's'
                 return(new_str)
             
@@ -484,8 +499,8 @@ class Convert():
             # example: https://www.youtube.com/watch?v=eBVGYdHNUW4
             
             
-            m = re.search('t=([\dsmh]+)$', url)
-            m2 = re.search('([a-zA-Z0-9\_\-]{11})', url)
+            m = re.search(r't=([\dsmh]+)$', url)
+            m2 = re.search(r'([a-zA-Z0-9\_\-]{11})', url)
             if m:
                 new_str = 'y.' + str(m2.group(1)) + '.' + str(m.group(1))
                 return(new_str)
@@ -494,9 +509,9 @@ class Convert():
 
         def check_for_online_omm(input_str):
             # check for .omm input_str ending
-            omm_check = re.search('\.omm$', input_str)
+            omm_check = re.search(r'\.omm$', input_str)
             # check for http input_str start
-            http_check = re.search('^http', input_str)
+            http_check = re.search(r'^http', input_str)
             if omm_check and http_check:
                 omm_object = online_omm_parser.main(input_str, Convert.omm)
                 return(omm_object)
@@ -507,7 +522,7 @@ class Convert():
         def check_for_yota_file(input_str):
             """Takes omm string, checks for .omm ending"""
 
-            m = re.search('\.omm$', input_str)
+            m = re.search(r'\.omm$', input_str)
             if m:
                 omm_object = omm_file_parser.main(input_str, Convert.omm)
                 return(omm_object)
@@ -515,27 +530,23 @@ class Convert():
 
         def split_yotas(yotas_str):
 
-            m = re.search('\.\.', yotas_str)
+            m = re.search(r'\.\.', yotas_str)
             if m: # check not matching y.youtubehash (hash starting with y)
                 my_list = yotas_str.split('..')
-                new_list = [my_list[0]]
-                # for item in my_list[1:]:
-                #     new_str = 'y.' + item
-                #     new_list.append(new_str)
                 return(my_list)
             else:
                 return(yotas_str)
 
         def check_for_ono(input_str):
             # check for o.mediabytehash
-            m = re.search('^o\.', input_str)
+            m = re.search(r'^o\.', input_str)
             if m:
                 myObject = ono.check_ono(input_str)
                 return(myObject)
 
         def check_for_bit_mixtape(input_str):
-            starts_with_bit_check = re.search('^b\.', input_str)
-            bit_mixtape_check = re.search('\.b\.', input_str)
+            starts_with_bit_check = re.search(r'^b\.', input_str)
+            bit_mixtape_check = re.search(r'\.b\.', input_str)
             if starts_with_bit_check and bit_mixtape_check:
                 return(True)
         
@@ -571,7 +582,7 @@ class Convert():
         else:
             if remember == True:
                 # check for b. or y. (to avoid non-mediabyte entries)
-                m = re.search('^[by]\.', omm_str)
+                m = re.search(r'^[by]\.', omm_str)
                 if m:
                     ono.add_to_hash_dict(omm_str)
 
@@ -596,7 +607,7 @@ class Convert():
             ono.add_to_hash_dict(myMix.omm_oneline())
             return(myMix)
 
-        m = re.search('^[by]\.', omm_str)
+        m = re.search(r'^[by]\.', omm_str)
         if m:
             return(parse_object(omm_str))
         else:
@@ -641,7 +652,7 @@ class Convert():
                 filters = json.load(f)
             if save_filter_as not in filters:
                 filters[save_filter_as] = search_term
-                with open(foldername, 'w') as f:
+                with open(cnf.filters_path, 'w') as f:
                     json.dump(filters, f)
             
 

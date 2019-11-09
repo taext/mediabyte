@@ -44,7 +44,7 @@ class Testomm(unittest.TestCase):
 #### NO TAGS
     
     def test_sample_no_tags(self):
-        sample_test_str = omm_str = 'y.8ZtHhF9Lt_8.1s.Welcome_&_Sponsors.1m58s'
+        sample_test_str = 'y.8ZtHhF9Lt_8.1s.Welcome_&_Sponsors.1m58s'
         result = lib.Convert.omm(sample_test_str)
         self.assertEqual(result.__repr__()[:7], 'Welcome')
         self.assertEqual(result.time_start, 1)
@@ -69,7 +69,7 @@ class Testomm(unittest.TestCase):
 ### NO TITLE
 
     def test_sample_no_title(self):
-        sample_test_str = omm_str = 'y.8ZtHhF9Lt_8.1s.podcast.intro.1m58s'
+        sample_test_str = 'y.8ZtHhF9Lt_8.1s.podcast.intro.1m58s'
         result = lib.Convert.omm(sample_test_str)
         self.assertEqual(result.__repr__()[:8], 'MySample')
         self.assertEqual(result.tags, ['podcast','intro'])
@@ -210,8 +210,9 @@ class Testomm(unittest.TestCase):
 
     def test_mixtape_player(self):
         test_mix_object = lib.Convert.omm('y.drRQVI58c-E.1m18s.Koreans_on_Metoo.interview.asia.2m..y.drRQVI58c-E.1m18s.Koreans_on_Metoo.interview.asia.2m')
-        obj_jule = test_mix_object.player()
-        test_jule = '<iframe width="360" height="216" title="Koreans on Metoo" src="https://www.youtube.com/embed/drRQVI58c-E?start=78&end=120&rel=0&autoplay=0&enablejsapi=1" frameborder=0 allowfullscreen></iframe> <iframe width="360" height="216" title="Koreans on Metoo" src="https://www.youtube.com/embed/drRQVI58c-E?start=78&end=120&rel=0&autoplay=0&enablejsapi=1" frameborder=0 allowfullscreen></iframe> <!DOCTYPE html>\n                                <html lang="en">\n                                <head>\n                                <meta charset="utf-8">\n                                <meta name="viewport" content="width=device-width, initial-scale=1">\n                                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">\n                                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>\n                                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>\n                                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>\n                                <title> YouTube Koreans on Met</title>\n                                </head>\n                                <body>\n\n                                <script src="https://www.youtube.com/iframe_api"></script><script>function onYouTubeIframeAPIReady() { window.yotasamples = {}; let i = 0;  for (let ifrm of document.getElementsByTagName("iframe")) {       ifrm.id = "sample" + i;      ifrm.yotaidx = i;      window.yotasamples[i] = new YT.Player(ifrm.id, {events: {"onStateChange": playerStateChange}});        i++;  }}  function playerStateChange(event) {    console.log(event.data);    switch(event.data) {        case 0:            let myidx = event.target.getIframe().yotaidx;            event.target.getIframe().classList.remove("current");if (window.yotasamples[myidx+1]) { window.yotasamples[myidx+1].getIframe().classList.add("current");window.yotasamples[myidx+1].playVideo();} else{window.yotasamples[0].getIframe().classList.add("current")}                        break    }  }document.querySelector("iframe").classList.add("current");</script><input type=button style="position:fixed;bottom:0;left:0" value="Toggle View" onclick="document.documentElement.classList.toggle(this.dataset.targetclass);" data-targetclass=julekalenderview><style>html:not(.julekalenderview) iframe:not(.current) {display:none} </style>\n\n                                </body>\n                                </html>\n\n'
+        obj_jule = test_mix_object.iframe()
+        test_jule = '<p>\nmediabyte.Mixtape <strong>o.e994f78f2cf</strong> Koreans <strong>o.aa13e150023</strong> Koreans <strong>o.aa13e150023</strong> </p>  <iframe width="360" height="216" title="Koreans on Metoo" src="https://www.youtube.com/embed/drRQVI58c-E?start=78&end=120&rel=0&autoplay=0&enablejsapi=1" frameborder=0 allowfullscreen></iframe> <iframe width="360" height="216" title="Koreans on Metoo" src="https://www.youtube.com/embed/drRQVI58c-E?start=78&end=120&rel=0&autoplay=0&enablejsapi=1" frameborder=0 allowfullscreen></iframe> <!DOCTYPE html>\n                                <html lang="en">\n                                <head>\n                                <meta charset="utf-8">\n                                <meta name="viewport" content="width=device-width, initial-scale=1">\n                                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">\n                                <script src="https://ajax.googleapis.com/ajax/libs'
+
         self.assertEqual(obj_jule[:1000], test_jule[:1000])
 
 
@@ -219,19 +220,19 @@ class Testomm(unittest.TestCase):
 
     def test_cue_iframe(self):
         test_cue_object = lib.Convert.omm('y.gCLoXNL-AAI.1s.Rocket Beans Live')  # live stream, does it matter?
-        test_iframe = '<center><iframe width="360" height="216"  src="https://www.youtube.com/embed/gCLoXNL-AAI?start=1&rel=0&autoplay=1" frameborder=0 allowfullscreen></iframe></center>'
+        test_iframe = '<center><iframe width="360" height="216"  src="https://www.youtube.com/embed/gCLoXNL-AAI?start=1&rel=0&autoplay=1" frameborder=0 allowfullscreen></iframe></center> <p><center>y.gCLoXNL-AAI.1s.Rocket_Beans_Live</center></p>'
 
         self.assertEqual(test_cue_object.iframe(), test_iframe)
 
     def test_yota_iframe(self):
         test_cue_object = lib.Convert.omm('y.gCLoXNL-AAI.Rocket Beans Live')  # live stream, does it matter?
-        test_iframe = '<center><iframe width="360" height="216"  src="https://www.youtube.com/embed/gCLoXNL-AAI?start=0&rel=0&autoplay=1" frameborder=0 allowfullscreen></iframe></center>'
+        test_iframe = '<center><iframe width="360" height="216"  src="https://www.youtube.com/embed/gCLoXNL-AAI?start=0&rel=0&autoplay=1" frameborder=0 allowfullscreen></iframe></center> <p><center>y.gCLoXNL-AAI.Rocket_Beans_Live</center></p>'
 
         self.assertEqual(test_cue_object.iframe(), test_iframe)
 
     def test_sample_iframe(self):
         test_cue_object = lib.Convert.omm('y.drRQVI58c-E.1s.Rocket Beans Live.4s')  # live stream, does it matter?
-        test_iframe = '<center><iframe width="360" height="216"  src="https://www.youtube.com/embed/drRQVI58c-E?start=1&end=4&rel=0&autoplay=1" frameborder=0 allowfullscreen></iframe></center>'
+        test_iframe = '<center><iframe width="360" height="216"  src="https://www.youtube.com/embed/drRQVI58c-E?start=1&end=4&rel=0&autoplay=1" frameborder=0 allowfullscreen></iframe></center> <p><center>y.drRQVI58c-E.1s.Rocket_Beans_Live.4s</center></p>'
 
         self.assertEqual(test_cue_object.iframe(), test_iframe)
 

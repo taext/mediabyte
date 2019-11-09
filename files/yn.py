@@ -35,6 +35,10 @@ def return_results(args, count=1):
     else:
         today = False
 
+    # result count limitation
+    if count > 20:
+        raise ValueError("max 20 search results in the free version")
+
     search_string = args.replace(" ","+")
     youtube_string = 'https://www.youtube.com/results?search_query=' + search_string
     if today:

@@ -3,16 +3,16 @@ import copy
 import hashlib
 from . import bno, yno, ono
 from . import bit
-from . import search_srt as srt
 from . import omm_file_parser, sh
 from . import lib
 import string
 import time
 import os
+import sh as orig_sh
 
 
 
-def iframe(self, width=360, pause=False, title=False, center=True):
+def iframe(self, width=360, pause=False, title=False, center=True, show_mediabyte=True):
     """Returns IFrame format."""
 
     url = '<center><iframe width="360" height="216" title="YYYYY" src="XXXXX" frameborder=0 allowfullscreen></iframe></center>'
@@ -32,6 +32,9 @@ def iframe(self, width=360, pause=False, title=False, center=True):
         newUrl = newUrl.replace('<center>',new_title)
     if not center:
         newUrl = newUrl[8:-9]
+
+    if show_mediabyte:
+        newUrl += " " + "<p><center>" + self.omm + "</center></p>"
     
     return(newUrl)
 
@@ -58,22 +61,6 @@ def build_html(self):
         html_str +=  '  ' + '(a)'
 
     return html_str    
-
-
-# def build_html(self):
-
-#     if self.tags:
-#         html_str = '<a href="' + str(self.url) + '" title="' + " ".join(self.tags) +  '">' + str(self.title) + '</a>'
-#     else:
-#         html_str = '<a href="' + str(self.url) + '">' + str(self.title) + '</a>'
-
-#     try: 
-#         for item in self.bits:        
-#             html_str += '  [' + item.html + ']'
-#     except:
-#         pass
-
-#     return html_str    
 
 
 def build_bits(bits):
@@ -271,13 +258,17 @@ class Mixtape():
         display(HTML(self.html(title_str)))
 
 
-    def iframe(self, width=360, titles=False):
-        """Returns chapterized HTML."""
+    def wall_of_tv(self, width=360, titles=False):
+        """Returns Wall-of-TV HTML."""
 
         iframe_collection_str = ""
         for item in self:
             new_url = item.url[:-1] + "0"
-            new_str = '<iframe width="' + str(width) + '" height="' + str(int(width * 0.6)) + '" title="' + item.title + '" src="' + new_url + '" frameborder=0 allowfullscreen></iframe>'
+            if item.title:
+                title = item.title
+            else:
+                title = ""
+            new_str = '<iframe width="' + str(width) + '" height="' + str(int(width * 0.6)) + '" title="' + title + '" src="' + new_url + '" frameborder=0 allowfullscreen></iframe>'
             if titles:
                 new_str = '<h3>' + repr(item) + '</h3> <br>' + new_str
             iframe_collection_str += new_str + " "
@@ -285,7 +276,7 @@ class Mixtape():
         return(iframe_collection_str)
 
 
-    def player(self, width=360, titles=False):
+    def iframe(self, width=360, titles=False, mediabytehash=True, mixtape_oneliner=False):
         """Returns javascript player HTML."""
 
         iframe_collection_str = ""
@@ -320,14 +311,36 @@ class Mixtape():
                                 </html>
 
                                 """
-        # if self.content[0].title:
-        #     title = self.content[0].title[:-2]
-        # else:
-        #     title = ""
 
         javascript_by_jonas = javascript_by_jonas.replace("{{ mediabyte.title }}", "mediabyte.Mixtape Player")
 
         iframe_collection_str += javascript_by_jonas
+
+        def one_liner(self):
+        
+            html_str = '<p>\n' + self.__repr__().split("\n")[0].split(" ")[0] + " "
+            html_str += '<strong>' + self.__repr__().split("\n")[0].split(" ")[-1] + '</strong> '
+
+
+            for item in self:
+                 title = item.__repr__().split(" ")[0] 
+                 mediabytehash = item.__repr__().split(" ")[-1]
+                 temp_html_str = title + " " + "<strong>" + mediabytehash + "</strong> "
+                 html_str += temp_html_str
+            html_str += "</p>"
+
+            return html_str
+
+        if mediabytehash:
+            html_oneliner = one_liner(self)
+            if mixtape_oneliner:
+                iframe_collection_str = html_oneliner + " \n " + self.omm_oneline() + " <br> " + iframe_collection_str    
+            else:
+                iframe_collection_str = html_oneliner + "  " + iframe_collection_str
+
+
+        
+
 
         return(iframe_collection_str)
 
@@ -365,7 +378,7 @@ class Mixtape():
 
     def write_player_html(self, filename, width=360):
 
-        html = self.player(width=width)
+        html = self.iframe(width=width)
         with open(filename,'w') as f:
             f.write(html)
             f.write("\n\n")
@@ -390,47 +403,24 @@ class Mixtape():
         else:
             raise ValueError('only supported for Yota-only Mixtapes')
 
-
-    def srt_search(self, keyword, min_interval=10, sample_length=7):
-        i = 0
-        myMix = None
-        while not myMix:
-            myMix = self[i].srt_search(keyword, min_interval=10, sample_length=sample_length)
-            if i + 1 == len(self):
-                return myMix
-            else:
-                i += 1
-            
-        if self[i:]:
-            for item in self[i:]:
-                result = item.srt_search(keyword, min_interval=10, sample_length=sample_length)
-                if result is not None:
-                    for item2 in result:
-                        myMix += item2
-            return myMix
+        vlc_pid = orig_sh.pidof("vlc").strip()
+        if vlc_pid:
+            def vlc_quitter():
+                """Returns an iterator to quit active VLC processes from newest onward"""
+                for item in vlc_pid.split(" "):
+                    sh.ell("kill", item)
+                    yield (f"killed VLC pid: {item}")
+            turn_off_vlc = vlc_quitter()
+            return turn_off_vlc
 
 
-    # def srt_search(self, search_term, clip_length=10):
-
-    #     result_list = []
-    #     myMixtape = None
-    #     for item in self:
-    #         result = item.srt_search(search_term, clip_length=clip_length)
-    #         if isinstance(result, Mixtape):
-    #             for item in result:
-    #                 result_list.append(item)
-    #         elif isinstance(result, Sample):
-    #             result_list.append(item)
-    #         elif isinstance(result, Cue) and clip_length:
-    #             print('Error, got Cue object while clip_length:', clip_length)
-    #         elif isinstance(result, Cue):
-    #             result_list.append(item)
-    #     if result_list:
-    #         myMixtape = Mixtape(result_list[0])
-    #         for item in result_list[1:]:
-    #             myMixtape += item
-                
-    #     return(myMixtape)
+    def vlc_chapter_iter(self):
+        def vlc_iter():
+            for item in self:
+                vlc_quiter = item.vlc()
+                yield vlc_quiter
+        chapter_iter = vlc_iter()
+        return chapter_iter
 
 
     def write_omm(self, filename):
@@ -799,6 +789,16 @@ class Sample():
 
         lib.Convert.vlc_open(self, full_screen=full_screen)
 
+        vlc_pid = orig_sh.pidof("vlc").strip()
+        if vlc_pid:
+            def vlc_quitter():
+                """Returns an iterator to quit active VLC processes from newest onward"""
+                for item in vlc_pid.split(" "):
+                    sh.ell("kill", item)
+                    yield (f"killed VLC pid: {item}")
+            turn_off_vlc = vlc_quitter()
+            return turn_off_vlc
+
 
     def pad(self, shift_value):
         """Extends the Sample in time, positive integers extends the front and 
@@ -926,6 +926,17 @@ class Cue():
     def vlc(self, full_screen=False):
 
         lib.Convert.vlc_open(self, full_screen=full_screen)
+
+        vlc_pid = orig_sh.pidof("vlc").strip()
+        if vlc_pid:
+            def vlc_quitter():
+                """Returns an iterator to quit active VLC processes from newest onward"""
+                for item in vlc_pid.split(" "):
+                    sh.ell("kill", item)
+                    yield (f"killed VLC pid: {item}")
+            turn_off_vlc = vlc_quitter()
+            return turn_off_vlc
+
 
 
 
@@ -1198,6 +1209,16 @@ class Yota():
 
         lib.Convert.vlc_open(self, full_screen=full_screen)
 
+        vlc_pid = orig_sh.pidof("vlc").strip()
+        if vlc_pid:
+            def vlc_quitter():
+                """Returns an iterator to quit active VLC processes from newest onward"""
+                for item in vlc_pid.split(" "):
+                    sh.ell("kill", item)
+                    yield (f"killed VLC pid: {item}")
+            turn_off_vlc = vlc_quitter()
+            return turn_off_vlc
+
 
     def methods(self):
         """Show methods and parameters."""
@@ -1303,67 +1324,6 @@ class Yota():
 
         if self.omm[-1] == '.':
             self.omm = self.omm[:-1]
-        
-    
-    # def to_sample(self, add=0, time_end_str=None, time_start_str=False):
-    
-    #     yota_copy = copy.deepcopy(self)
-        
-    #     if time_start_str:
-    #         start_time = time_start_str
-    #     else:
-    #         start_time = '1s'
-
-    #     if add:
-    #         new_omm = yota_copy.omm + '.' + start_time + '.' + str(time_start + add) + 's'   # NB: 0s bug to be fixed
-    #         new_sample = omm(new_omm)
-    #         return(new_sample)
-
-    #     elif time_end_str: 
-    #         new_omm = yota_copy.omm + '.' + start_time + '.' + time_end_str
-    #         new_sample = omm(new_omm)
-    #         return(new_sample)
-
-
-    def srt_search(self, keyword, sample_length=7, min_interval=10, mixtape=True):
-        """Takes search term, optional sample length and minimum clip length (for merging nearby results), 
-        returns Mixtape of results (optionally list of urls), set sample_length=0 to get Cue results."""
-
-
-        def cue_str_to_sample(cue_str, sample_length):
-            myCue = lib.Convert.omm(cue_str)
-            time_in_question = myCue.time_start
-            end_time = time_in_question + sample_length
-            end_time_yt_format = myCue.youtube_time_format(end_time)
-            mySampleStr = myCue.omm + "." + end_time_yt_format
-            mySample = lib.Convert.omm(mySampleStr)
-            return mySample
-
-        result = srt.main(keyword, self.youtube_hash, min_interval = min_interval)
-        if mixtape:
-            if result:
-                if sample_length == False:
-                    myCue = lib.Convert.omm(result[0])
-                    ono.add_to_hash_dict(myCue.omm)
-                    myMix = Mixtape(myCue)
-                else:
-                    mySample = cue_str_to_sample(result[0], sample_length)
-                    myMix = Mixtape(mySample)
-
-                for item in result[1:]:
-                    if sample_length == False:
-                        myCue = lib.Convert.omm(item)
-                        # add to hash_dict
-                        ono.add_to_hash_dict(myCue.omm)
-                        myMix += myCue
-                    else:
-                        mySample = cue_str_to_sample(item, sample_length)
-                        myMix += mySample
-                # add Mixtape to hash_dict
-                lib.Convert.omm(myMix.omm_oneline())
-                return myMix
-
-        return result
 
 
     def hash(self):
@@ -1374,6 +1334,7 @@ class Yota():
             if char in string.ascii_letters:
                 calculated_hash = temp_hash[i:i+11]
                 return(calculated_hash)
+
 
 
 class Drip():
