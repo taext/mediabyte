@@ -5,7 +5,7 @@
 
 <br>
 
-Mediabyte is an open-source poly-platform playlist format and succinct online media referencing syntax.
+Mediabyte is a succinct online media referencing syntax. Think MIDI for online media.
 
 <br>
 
